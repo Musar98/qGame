@@ -4,9 +4,9 @@ import {Component} from '@angular/core';
     selector: 'app-pagefooter',
     standalone: true,
     imports: [],
-    templateUrl: './pagefooter.component.html',
-    styleUrl: './pagefooter.component.css'
+    templateUrl: './page-footer.component.html',
+    styleUrl: './page-footer.component.css'
 })
-export class PagefooterComponent {
+export class PageFooterComponent {
 
 }

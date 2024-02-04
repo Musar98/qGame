@@ -4,9 +4,9 @@ import {Component} from '@angular/core';
   selector: 'app-pageheader',
   standalone: true,
   imports: [],
-  templateUrl: './pageheader.component.html',
-  styleUrl: './pageheader.component.css'
+  templateUrl: './page-header.component.html',
+  styleUrl: './page-header.component.css'
 })
-export class PageheaderComponent {
+export class PageHeaderComponent {
 
 }

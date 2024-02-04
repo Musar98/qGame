@@ -1,23 +1,31 @@
 import {Component} from '@angular/core';
 import {RouterOutlet} from '@angular/router';
-import {PagefooterComponent} from "./pagefooter/pagefooter.component";
-import {PageheaderComponent} from "./pageheader/pageheader.component";
+import {PageFooterComponent} from "./pagefooter/page-footer.component";
+import {PageHeaderComponent} from "./pageheader/page-header.component";
 import {CommonModule} from "@angular/common";
-import {GamescreenComponent} from "./gamescreen/gamescreen.component";
+import {GameScreenComponent} from "./gamescreen/game-screen.component";
+import {FormsModule} from "@angular/forms";
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, PagefooterComponent, PageheaderComponent, CommonModule, GamescreenComponent],
+  imports: [RouterOutlet, PageFooterComponent, PageHeaderComponent, CommonModule, GameScreenComponent, FormsModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
 
 export class AppComponent {
-  gameStarted: boolean = false;
+  gameStarted: boolean = true;
+  topic: string = '';
+  username: string = '';
 
-  startGame() {
-    this.gameStarted = true;
-    console.log(this.gameStarted)
+  isFormValid(): boolean {
+    return this.topic !== '' && this.username !== '';
+  }
+
+  startGame(): void {
+    if (this.isFormValid()) {
+      this.gameStarted = true;
+    }
   }
 }

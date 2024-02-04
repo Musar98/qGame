@@ -1,8 +1,9 @@
 h1 {
   color: #86a1b4;
-  font-size: 600%;
+  font-size: 500%;
   text-shadow: 4px 3px 4px rgb(39, 117, 161);
   margin-bottom: 0.2rem;
+  margin-top:1%;
 }
 
 a {
@@ -22,4 +23,13 @@ nav {
     #253762 75%,
     #282c34
   );
+}
+
+/* todo adjust styles for mobile view */
+
+@media (max-width: 767px) {
+  h1 {
+    font-size: 400%;
+    margin:0;
+  }
 }

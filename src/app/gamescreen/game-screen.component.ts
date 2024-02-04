@@ -1,17 +1,18 @@
 import {Component, OnInit} from '@angular/core';
-import {CommonModule, DatePipe} from "@angular/common";
+import {CommonModule} from "@angular/common";
 
 @Component({
   selector: 'app-gamescreen',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './gamescreen.component.html',
-  styleUrl: './gamescreen.component.css'
+  templateUrl: './game-screen.component.html',
+  styleUrl: './game-screen.component.css'
 })
 
-export class GamescreenComponent implements OnInit {
+export class GameScreenComponent implements OnInit {
   timerValue: number = 0;
   timerInterval: any;
+  questionCounter: number = 1;
 
 
   ngOnInit(): void {

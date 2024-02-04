@@ -1,61 +1,61 @@
-  body, html {
-    height: 100%;
-    margin: 0;
-    background: linear-gradient(
-      to right,
-      #282c34,
-      #1b3294 25%,
-      #283359 50%,
-      #1b3294 75%,
-      #282c34
-    );
-    text-align: center;
-    font-family: "Comic Sans MS", sans-serif;
-  }
+body, html {
+  height: 100%;
+  margin: 0;
+  background: linear-gradient(
+    to right,
+    #282c34,
+    #1b3294 25%,
+    #283359 50%,
+    #1b3294 75%,
+    #282c34
+  );
+  text-align: center;
+  font-family: "Comic Sans MS", sans-serif;
+}
 
-  app-root {
-    display: flex;
-    flex-direction: column;
-    min-height: 100%;
-  }
+app-root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+}
 
-  header {
-    display: flex;
-    flex-direction: column;
-  }
+header {
+  display: flex;
+  flex-direction: column;
+}
 
-  div {
-    margin-top: 2%;
-  }
+div {
+  margin-top: 2%;
+}
 
-  main {
-    flex: 1;
-  }
+main {
+  flex: 1;
+}
 
-  app-gamescreen {
-    min-height: 100%;
-    margin-top: auto;
-    margin-bottom: auto;
-  }
+/* todo check is this necessary?*/
+app-gamescreen {
+  min-height: 100%;
+}
 
-  app-pagefooter {
-    margin-top: auto;
-    display: flex;
-    justify-content: center;
-    background: linear-gradient(
-      to right,
-      #282c34,
-      #253762 50%,
-      #253762 75%,
-      #282c34
-    );
-    padding: 1%;
-    border-top: solid #253762;
-  }
+app-pagefooter {
+  margin-top: auto;
+  display: flex;
+  justify-content: center;
+  background: linear-gradient(
+    to right,
+    #282c34,
+    #253762 50%,
+    #253762 75%,
+    #282c34
+  );
+  padding: 1%;
+  border-top: solid #253762;
+}
 
-  footer a {
-    text-decoration: none;
-    color: cornflowerblue;
-    font-size: 125%
-  }
+footer a {
+  text-decoration: none;
+  color: cornflowerblue;
+  font-size: 125%
+}
+
 

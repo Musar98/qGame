@@ -35,6 +35,10 @@ button {
   height:3rem;
 }
 
-button:hover {
+button:disabled {
+  opacity: 40%;
+}
+
+button:not(:disabled):hover {
   background-color: #6387af;
 }

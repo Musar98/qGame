@@ -1,14 +1,88 @@
+h4 {
+  font-size: 350%;
+  margin-top: 0.5%;
+  margin-bottom: 0;
+  color: #a4d6f3;
+  text-shadow: #757679 3px 2px 2px;
+}
+
 p {
-  font-size:280%;
+  color: white;
+  font-size: x-large;
+  text-shadow: #86a1b4 1px 1px 1px;
 }
 
 #timer {
+  margin-top:1%;
+  margin-bottom: 0.5%;
   font-size: 3em;
-  color: #1f41d0;
-  text-shadow: 2px 2px 4px rgba(87, 83, 83, 0.57);
+  color: #94bbff;
+  text-shadow: 2px 2px 4px rgba(100, 142, 231, 0.57);
   padding: 0.5%;
   border-radius: 15px;
   display: inline-block;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.45);
+  box-shadow: 0 4px 10px 5px rgba(0, 0, 0, 0.45);
 }
 
+.radio-container {
+  margin-top: 1%;
+}
+
+.radio-item {
+  margin-top: 1.2%;
+  border: #404e70 solid 2px;
+  border-radius: 8px;
+  width: 40%;
+  margin-left: auto;
+  margin-right: auto;
+  background: linear-gradient(
+    to right,
+    #243364,
+    #39548c 25%,
+    #404e70 50%,
+    #39548c 75%,
+    #243364
+  );
+}
+
+.radio-item input:checked + label {
+  color: #ffdb00;
+}
+
+label {
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  padding: 2% 2% 2% 2%;
+  font-size: 120%;
+}
+
+input[type='radio'] {
+  display: none;
+}
+
+/* todo adjust styles for mobile view */
+
+@media (max-width: 767px) {
+  #timer {
+    padding:1%;
+    font-size: 180%;
+  }
+  h4 {
+    font-size: 200%;
+    margin-top: 2%;
+  }
+  p{
+    font-size: 90%;
+  }
+  .radio-item {
+    margin-top:5%;
+    width: 80%;
+  }
+  label {
+    font-size: 80%;
+  }
+  .radio-container {
+    margin-top: 8%;
+  }
+}

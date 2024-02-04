@@ -7,7 +7,7 @@
 
   <div>
     <h3>Start now by choosing a
-      <select id="topic" name="topic" >
+      <select id="topic" name="topic" [(ngModel)]="topic" required>
         <option id="defaultOptionTopic" value="" disabled selected hidden>Topic</option>
         <option>Gaming</option>
         <option>Series</option>
@@ -15,9 +15,9 @@
         <option>Sports</option>
         <option>Nature</option>
       </select> and entering a username:
-      <input type="text" id="username" name="username" placeholder="Username" required>
+      <input type="text" id="username" name="username" [(ngModel)]="username" placeholder="Username" required>
     </h3>
-    <button (click)="startGame()">Start</button>
+    <button (click)="startGame()" [disabled]="!isFormValid()">Start</button>
   </div>
 </main>
 <app-gamescreen *ngIf="gameStarted"></app-gamescreen>
