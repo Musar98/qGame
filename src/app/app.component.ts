@@ -15,7 +15,7 @@ import {FormsModule} from "@angular/forms";
 })
 
 export class AppComponent {
-  gameStarted: boolean = true;
+  gameStarted: boolean = false;
   topic: string = '';
   username: string = '';
 
