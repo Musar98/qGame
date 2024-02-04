@@ -1,0 +1,35 @@
+h1 {
+  color: #86a1b4;
+  font-size: 500%;
+  text-shadow: 4px 3px 4px rgb(39, 117, 161);
+  margin-bottom: 0.2rem;
+  margin-top:1%;
+}
+
+a {
+  color: cornflowerblue;
+  font-size: 125%;
+  text-decoration: none
+}
+
+nav {
+  border-bottom: solid #253762;
+  width: 100%;
+  text-align: center;
+  background: linear-gradient(
+    to right,
+    #282c34,
+    #253762 50%,
+    #253762 75%,
+    #282c34
+  );
+}
+
+/* todo adjust styles for mobile view */
+
+@media (max-width: 767px) {
+  h1 {
+    font-size: 400%;
+    margin:0;
+  }
+}

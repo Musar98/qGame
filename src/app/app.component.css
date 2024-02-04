@@ -1,0 +1,44 @@
+h2 {
+  font-size: 2.5em;
+  color: lightslategray;
+}
+
+p {
+  font-size: 1.2em;
+  color: slategrey;
+  margin-bottom: 3%;
+}
+
+h3 {
+  font-size: 1.5em;
+  color: lightslategray;
+}
+
+select,
+input {
+  font-size: 0.7em;
+  border: solid #cad7ff;
+  border-radius: 5px;
+  background: lightgrey;
+}
+
+button {
+  font-family: inherit;
+  margin-top:1%;
+  font-size: 1.2em;
+  background-color: #445b73;
+  color: #cad7ff;
+  border: solid #6375ce;
+  border-radius: 5px;
+  cursor: pointer;
+  width:10rem;
+  height:3rem;
+}
+
+button:disabled {
+  opacity: 40%;
+}
+
+button:not(:disabled):hover {
+  background-color: #6387af;
+}
