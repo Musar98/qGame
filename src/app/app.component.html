@@ -1,0 +1,25 @@
+<app-pageheader></app-pageheader>
+<main *ngIf="!gameStarted">
+  <div>
+    <h2>The Fiddy Question Game</h2>
+    <p>Challenge yourself with 50 questions on topics, that you believe, you know a lot about.</p>
+  </div>
+
+  <div>
+    <h3>Start now by choosing a
+      <select id="topic" name="topic" >
+        <option id="defaultOptionTopic" value="" disabled selected hidden>Topic</option>
+        <option>Gaming</option>
+        <option>Series</option>
+        <option>Science</option>
+        <option>Sports</option>
+        <option>Nature</option>
+      </select> and entering a username:
+      <input type="text" id="username" name="username" placeholder="Username" required>
+    </h3>
+    <button (click)="startGame()">Start</button>
+  </div>
+</main>
+<app-gamescreen *ngIf="gameStarted"></app-gamescreen>
+<app-pagefooter></app-pagefooter>
+<router-outlet/>

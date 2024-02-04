@@ -1,0 +1,14 @@
+p {
+  font-size:280%;
+}
+
+#timer {
+  font-size: 3em;
+  color: #1f41d0;
+  text-shadow: 2px 2px 4px rgba(87, 83, 83, 0.57);
+  padding: 0.5%;
+  border-radius: 15px;
+  display: inline-block;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.45);
+}
+
