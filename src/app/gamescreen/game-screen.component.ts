@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {CommonModule} from "@angular/common";
 import {Question} from "./Types";
 import {DEMO_QUESTIONS} from "./Constants";
@@ -22,6 +22,9 @@ export class GameScreenComponent implements OnInit {
   private currentSolution: string = this.questionSetDEMO[this.questionCounter - 1].answer;
   protected currentQuestion: string = this.questionSetDEMO[this.questionCounter - 1].question;
 
+  @Input() questions: any;
+
+
   evaluate(label: HTMLElement): void {
     const choice: string | null = label.textContent;
 
@@ -35,7 +38,10 @@ export class GameScreenComponent implements OnInit {
     }
   }
 
+
   ngOnInit(): void {
+    //todo continue remove log and work further with questions
+    console.log(this.questions)
     this.startTimer();
   }
 

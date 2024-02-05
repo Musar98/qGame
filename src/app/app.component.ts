@@ -5,19 +5,32 @@ import {PageHeaderComponent} from "./pageheader/page-header.component";
 import {CommonModule} from "@angular/common";
 import {GameScreenComponent} from "./gamescreen/game-screen.component";
 import {FormsModule} from "@angular/forms";
+import {OpenTriviaApiService} from "./open-trivia-api.service";
 
 @Component({
   selector: 'app-root',
   standalone: true,
   imports: [RouterOutlet, PageFooterComponent, PageHeaderComponent, CommonModule, GameScreenComponent, FormsModule],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  styleUrl: './app.component.css',
+  providers: [OpenTriviaApiService]
 })
 
 export class AppComponent {
   gameStarted: boolean = false;
   topic: string = '';
   username: string = '';
+  questions: any;
+
+  constructor(private openTriviaApiService: OpenTriviaApiService) {
+  }
+
+  ngOnInit() {
+    this.openTriviaApiService.getQuestions().then((response: {
+      response_code: number,
+      results: []
+    }) => this.questions = response.results);
+  }
 
   isFormValid(): boolean {
     //todo when topics introduced
