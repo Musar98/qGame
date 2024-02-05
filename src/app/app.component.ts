@@ -20,7 +20,9 @@ export class AppComponent {
   username: string = '';
 
   isFormValid(): boolean {
-    return this.topic !== '' && this.username !== '';
+    //todo when topics introduced
+    // return this.topic !== '' && this.username !== '';
+    return this.username !== ''
   }
 
   startGame(): void {

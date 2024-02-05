@@ -1,5 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {CommonModule} from "@angular/common";
+import {Question} from "./Types";
+import {DEMO_QUESTIONS} from "./Constants";
+
 
 @Component({
   selector: 'app-gamescreen',
@@ -9,11 +12,28 @@ import {CommonModule} from "@angular/common";
   styleUrl: './game-screen.component.css'
 })
 
-export class GameScreenComponent implements OnInit {
-  timerValue: number = 0;
-  timerInterval: any;
-  questionCounter: number = 1;
 
+export class GameScreenComponent implements OnInit {
+  private timerValue: number = 0;
+  private timerInterval: any;
+  private numberOfCorrectAnswers: number = 0;
+  protected questionCounter: number = 1;
+  protected questionSetDEMO: Question[] = DEMO_QUESTIONS;
+  private currentSolution: string = this.questionSetDEMO[this.questionCounter - 1].answer;
+  protected currentQuestion: string = this.questionSetDEMO[this.questionCounter - 1].question;
+
+  evaluate(label: HTMLElement): void {
+    const choice: string | null = label.textContent;
+
+    if (choice && this.questionCounter < this.questionSetDEMO.length) {
+      if (choice === this.currentSolution) {
+        this.numberOfCorrectAnswers += 1;
+      }
+      this.questionCounter += 1;
+      this.currentQuestion = this.questionSetDEMO[this.questionCounter - 1]?.question || '';
+      this.currentSolution = this.questionSetDEMO[this.questionCounter - 1]?.answer || '';
+    }
+  }
 
   ngOnInit(): void {
     this.startTimer();
