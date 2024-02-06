@@ -5,7 +5,7 @@ import {PageHeaderComponent} from "./pageheader/page-header.component";
 import {CommonModule} from "@angular/common";
 import {GameScreenComponent} from "./gamescreen/game-screen.component";
 import {FormsModule} from "@angular/forms";
-import {OpenTriviaApiService} from "./open-trivia-api.service";
+import {OpenTriviaApiService} from "./services/open-trivia-api.service";
 
 @Component({
   selector: 'app-root',
@@ -26,10 +26,7 @@ export class AppComponent {
   }
 
   ngOnInit() {
-    this.openTriviaApiService.getQuestions().then((response: {
-      response_code: number,
-      results: []
-    }) => this.questions = response.results);
+    this.openTriviaApiService.getQuestions().then((triviaQuestions) => this.questions = triviaQuestions)
   }
 
   isFormValid(): boolean {

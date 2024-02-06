@@ -2,6 +2,8 @@ import {Component, Input, OnInit} from '@angular/core';
 import {CommonModule} from "@angular/common";
 import {Question} from "./Types";
 import {DEMO_QUESTIONS} from "./Constants";
+import {TriviaQuestion} from "../services/Types";
+import {remapTriviaQuestions} from "./Utils";
 
 
 @Component({
@@ -22,7 +24,7 @@ export class GameScreenComponent implements OnInit {
   private currentSolution: string = this.questionSetDEMO[this.questionCounter - 1].answer;
   protected currentQuestion: string = this.questionSetDEMO[this.questionCounter - 1].question;
 
-  @Input() questions: any;
+  @Input() questions: TriviaQuestion[] = [];
 
 
   evaluate(label: HTMLElement): void {
@@ -40,8 +42,8 @@ export class GameScreenComponent implements OnInit {
 
 
   ngOnInit(): void {
-    //todo continue remove log and work further with questions
-    console.log(this.questions)
+    //todo continue fix remapping
+    const remapped = remapTriviaQuestions(this.questions)
     this.startTimer();
   }
 
