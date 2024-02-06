@@ -30,4 +30,11 @@ export class AppComponent {
       this.gameStarted = true;
     }
   }
+
+  onEnterKey(): void {
+    if (this.isFormValid()) {
+      this.startGame();
+    }
+  }
+
 }
