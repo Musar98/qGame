@@ -22,7 +22,7 @@
       <!--      </select> -->
       <!--      and -->
       entering a username:
-      <input type="text" id="username" name="username" [(ngModel)]="username" placeholder="Username" required>
+      <input type="text" id="username" name="username" [(ngModel)]="username" placeholder="Username" required (keyup.enter)="onEnterKey()">
     </h3>
 
     <button (click)="startGame()" [disabled]="!isFormValid()">Start</button>
