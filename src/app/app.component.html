@@ -7,7 +7,6 @@
   </div>
 
   <div>
-
     <h3>
       Start now by
       <!--    todo introduce topics with template: -->
@@ -22,7 +21,15 @@
       <!--      </select> -->
       <!--      and -->
       entering a username:
-      <input type="text" id="username" name="username" [(ngModel)]="username" placeholder="Username" required (keyup.enter)="onEnterKey()">
+      <input
+        type="text"
+        id="username"
+        name="username"
+        [(ngModel)]="username"
+        placeholder="Username"
+        required
+        (keyup.enter)="onEnterKey()"
+      />
     </h3>
 
     <button (click)="startGame()" [disabled]="!isFormValid()">Start</button>
@@ -30,4 +37,4 @@
 </main>
 <app-gamescreen *ngIf="gameStarted" [questions]="questions"></app-gamescreen>
 <app-pagefooter></app-pagefooter>
-<router-outlet/>
+<router-outlet />

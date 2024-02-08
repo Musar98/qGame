@@ -2,27 +2,18 @@
   <p id="timer">{{ formatTimer() }}</p>
   <h4>Question {{ questionCounter }}</h4>
   <p>{{ currentQuestion }}</p>
-  <div class="radio-container">
-    <div class="radio-item">
-      <input type="radio" id="radio1" name="radioGroup">
-      <!--todo remove repetitive click-->
-      <label for="radio1" #myLabel
-             (click)="evaluate(myLabel)">{{ questionSet[questionCounter - 1].choices[0] }}</label>
-    </div>
-    <div class="radio-item">
-      <input type="radio" id="radio2" name="radioGroup">
-      <label for="radio2" #myLabel
-             (click)="evaluate(myLabel)">{{ questionSet[questionCounter - 1].choices[1] }}</label>
-    </div>
-    <div class="radio-item">
-      <input type="radio" id="radio3" name="radioGroup">
-      <label for="radio3" #myLabel
-             (click)="evaluate(myLabel)">{{ questionSet[questionCounter - 1].choices[2] }}</label>
-    </div>
-    <div class="radio-item">
-      <input type="radio" id="radio4" name="radioGroup">
-      <label for="radio4" #myLabel
-             (click)="evaluate(myLabel)">{{ questionSet[questionCounter - 1].choices[3] }}</label>
-    </div>
+  <div class="button-container">
+    <button #myLabel (click)="evaluate(myLabel)">
+      {{ questionSet[questionCounter - 1].choices[0] }}
+    </button>
+    <button #myLabel (click)="evaluate(myLabel)">
+      {{ questionSet[questionCounter - 1].choices[1] }}
+    </button>
+    <button #myLabel (click)="evaluate(myLabel)">
+      {{ questionSet[questionCounter - 1].choices[2] }}
+    </button>
+    <button #myLabel (click)="evaluate(myLabel)">
+      {{ questionSet[questionCounter - 1].choices[3] }}
+    </button>
   </div>
 </main>

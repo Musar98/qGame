@@ -7,7 +7,7 @@ function shuffleChoices(choices: string[]) {
   let shuffled: string[] = [];
   const numberOfChoices = choices.length;
 
-  let indices = Array.from({ length: numberOfChoices }, (_, index) => index);
+  let indices = Array.from({length: numberOfChoices}, (_, index) => index);
 
   for (let i = numberOfChoices - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
@@ -21,14 +21,25 @@ function shuffleChoices(choices: string[]) {
   return shuffled;
 }
 
+function parseHtml(htmlString: string): string {
+  const parsedDoc = new DOMParser().parseFromString(htmlString, 'text/html');
+  return parsedDoc.body.textContent || '';
+}
 
-//todo fix encoded text
+
 export function remapTriviaQuestions(triviaQuestions: TriviaQuestion[]): Question[] {
   return triviaQuestions.map((triviaQuestion) => {
+    const question = parseHtml(triviaQuestion.question);
+    const answer = parseHtml(triviaQuestion.correct_answer);
+    const shuffledChoices = shuffleChoices([...triviaQuestion.incorrect_answers, answer]);
+    const choices = shuffledChoices.map(parseHtml);
+
     return {
-      question: triviaQuestion.question,
-      answer: triviaQuestion.correct_answer,
-      choices: shuffleChoices([...triviaQuestion.incorrect_answers, triviaQuestion.correct_answer]),
-    }
-  })
+      question,
+      answer,
+      choices,
+    };
+  });
 }
+
+

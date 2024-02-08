@@ -1,33 +1,47 @@
-import {Component} from '@angular/core';
-import {RouterOutlet} from '@angular/router';
-import {PageFooterComponent} from "./pagefooter/page-footer.component";
-import {PageHeaderComponent} from "./pageheader/page-header.component";
-import {CommonModule} from "@angular/common";
-import {GameScreenComponent} from "./gamescreen/game-screen.component";
-import {FormsModule} from "@angular/forms";
-import {OpenTriviaApiService} from "./services/open-trivia-api.service";
+import { Component } from "@angular/core";
+import { RouterOutlet } from "@angular/router";
+import { PageFooterComponent } from "./pagefooter/page-footer.component";
+import { PageHeaderComponent } from "./pageheader/page-header.component";
+import { CommonModule } from "@angular/common";
+import { GameScreenComponent } from "./gamescreen/game-screen.component";
+import { FormsModule } from "@angular/forms";
+import { OpenTriviaApiService } from "./services/open-trivia-api.service";
+import { waitForAsync } from "@angular/core/testing";
 
 @Component({
-  selector: 'app-root',
+  selector: "app-root",
   standalone: true,
-  imports: [RouterOutlet, PageFooterComponent, PageHeaderComponent, CommonModule, GameScreenComponent, FormsModule],
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.css',
-  providers: [OpenTriviaApiService]
+  imports: [
+    RouterOutlet,
+    PageFooterComponent,
+    PageHeaderComponent,
+    CommonModule,
+    GameScreenComponent,
+    FormsModule,
+  ],
+  templateUrl: "./app.component.html",
+  styleUrl: "./app.component.css",
+  providers: [OpenTriviaApiService],
 })
-
 export class AppComponent {
   gameStarted: boolean = false;
-  topic: string = '';
-  username: string = '';
+  topic: string = "";
+  username: string = "";
   questions: any;
 
-  constructor(private openTriviaApiService: OpenTriviaApiService) {
-  }
+  constructor(private openTriviaApiService: OpenTriviaApiService) {}
 
   ngOnInit() {
-    this.openTriviaApiService.getQuestions().then(
-      (triviaResponse) => this.questions = triviaResponse ? triviaResponse.results : "Invalid Response")
+    if (!this.questions) {
+      this.openTriviaApiService
+        .getQuestions()
+        .then(
+          (triviaResponse) =>
+            (this.questions = triviaResponse
+              ? triviaResponse.results
+              : "Invalid Response"),
+        );
+    }
   }
 
   isFormValid(): boolean {
@@ -47,5 +61,4 @@ export class AppComponent {
       this.startGame();
     }
   }
-
 }
