@@ -6,7 +6,6 @@ import { CommonModule } from "@angular/common";
 import { GameScreenComponent } from "./gamescreen/game-screen.component";
 import { FormsModule } from "@angular/forms";
 import { OpenTriviaApiService } from "./services/open-trivia-api.service";
-import { waitForAsync } from "@angular/core/testing";
 
 @Component({
   selector: "app-root",
@@ -47,7 +46,7 @@ export class AppComponent {
   isFormValid(): boolean {
     //todo when topics introduced
     // return this.topic !== '' && this.username !== '';
-    return this.username !== ''
+    return this.username !== "";
   }
 
   startGame(): void {
