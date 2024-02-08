@@ -22,6 +22,7 @@ function shuffleChoices(choices: string[]) {
 }
 
 
+//todo fix encoded text
 export function remapTriviaQuestions(triviaQuestions: TriviaQuestion[]): Question[] {
   return triviaQuestions.map((triviaQuestion) => {
     return {
@@ -30,6 +31,4 @@ export function remapTriviaQuestions(triviaQuestions: TriviaQuestion[]): Questio
       choices: shuffleChoices([...triviaQuestion.incorrect_answers, triviaQuestion.correct_answer]),
     }
   })
-
-
 }

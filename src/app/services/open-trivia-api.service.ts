@@ -13,7 +13,7 @@ export class OpenTriviaApiService {
       return response.json();
 
     } catch (e) {
-      console.log(e)
+      console.log("ERROR WHILE TRYING TO GET RESSOURCES FROM OPENTDB:", e)
     }
     return;
   }

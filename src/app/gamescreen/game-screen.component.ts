@@ -1,7 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {CommonModule} from "@angular/common";
 import {Question} from "./Types";
-import {DEMO_QUESTIONS} from "./Constants";
 import {TriviaQuestion} from "../services/Types";
 import {remapTriviaQuestions} from "./Utils";
 
@@ -20,10 +19,9 @@ export class GameScreenComponent implements OnInit {
   private timerInterval: any;
   private numberOfCorrectAnswers: number = 0;
   protected questionCounter: number = 1;
-  protected questionSetDEMO: Question[] = DEMO_QUESTIONS;
-  private currentSolution: string = this.questionSetDEMO[this.questionCounter - 1].answer;
-  protected currentQuestion: string = this.questionSetDEMO[this.questionCounter - 1].question;
-  tryWithRemapped: Question[] = [];
+  questionSet: Question[] = [];
+  private currentSolution: string = "";
+  protected currentQuestion: string = "";
 
   @Input() questions: TriviaQuestion[] = [];
 
@@ -31,21 +29,21 @@ export class GameScreenComponent implements OnInit {
   evaluate(label: HTMLElement): void {
     const choice: string | null = label.textContent;
 
-    if (choice && this.questionCounter < this.questionSetDEMO.length) {
+    if (choice && this.questionCounter < this.questionSet.length) {
       if (choice === this.currentSolution) {
         this.numberOfCorrectAnswers += 1;
       }
       this.questionCounter += 1;
-      this.currentQuestion = this.questionSetDEMO[this.questionCounter - 1]?.question || '';
-      this.currentSolution = this.questionSetDEMO[this.questionCounter - 1]?.answer || '';
+      this.currentQuestion = this.questionSet[this.questionCounter - 1]?.question || '';
+      this.currentSolution = this.questionSet[this.questionCounter - 1]?.answer || '';
     }
   }
 
 
   ngOnInit(): void {
-    //todo continue fix remapping
-    this.tryWithRemapped = remapTriviaQuestions(this.questions)
-    console.log(this.tryWithRemapped)
+    this.questionSet = remapTriviaQuestions(this.questions)
+    this.currentQuestion = this.questionSet[this.questionCounter - 1].question
+    this.currentSolution = this.questionSet[this.questionCounter - 1].answer
     this.startTimer();
   }
 

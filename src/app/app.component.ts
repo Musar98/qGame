@@ -26,7 +26,8 @@ export class AppComponent {
   }
 
   ngOnInit() {
-    this.openTriviaApiService.getQuestions().then((triviaResponse) => this.questions = triviaResponse ? triviaResponse.results : "error happened in fetch")
+    this.openTriviaApiService.getQuestions().then(
+      (triviaResponse) => this.questions = triviaResponse ? triviaResponse.results : "Invalid Response")
   }
 
   isFormValid(): boolean {
