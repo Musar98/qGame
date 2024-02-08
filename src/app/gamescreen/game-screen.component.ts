@@ -23,6 +23,7 @@ export class GameScreenComponent implements OnInit {
   protected questionSetDEMO: Question[] = DEMO_QUESTIONS;
   private currentSolution: string = this.questionSetDEMO[this.questionCounter - 1].answer;
   protected currentQuestion: string = this.questionSetDEMO[this.questionCounter - 1].question;
+  tryWithRemapped: Question[] = [];
 
   @Input() questions: TriviaQuestion[] = [];
 
@@ -43,7 +44,8 @@ export class GameScreenComponent implements OnInit {
 
   ngOnInit(): void {
     //todo continue fix remapping
-    const remapped = remapTriviaQuestions(this.questions)
+    this.tryWithRemapped = remapTriviaQuestions(this.questions)
+    console.log(this.tryWithRemapped)
     this.startTimer();
   }
 
