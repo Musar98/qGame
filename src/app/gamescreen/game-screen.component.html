@@ -1,19 +1,24 @@
 <main>
-  <p id="timer">{{ formatTimer() }}</p>
-  <h4>Question {{ questionCounter }}</h4>
-  <p>{{ currentQuestion }}</p>
-  <div class="button-container">
-    <button #myLabel (click)="evaluate(myLabel)">
-      {{ questionSet[questionCounter - 1].choices[0] }}
-    </button>
-    <button #myLabel (click)="evaluate(myLabel)">
-      {{ questionSet[questionCounter - 1].choices[1] }}
-    </button>
-    <button #myLabel (click)="evaluate(myLabel)">
-      {{ questionSet[questionCounter - 1].choices[2] }}
-    </button>
-    <button #myLabel (click)="evaluate(myLabel)">
-      {{ questionSet[questionCounter - 1].choices[3] }}
-    </button>
+  <div *ngIf="questionSet.length < 1">
+    <app-spinner></app-spinner>
+  </div>
+  <div *ngIf="questionSet && questionSet.length > 0">
+    <p id="timer">{{ formatTimer() }}</p>
+    <h4>Question {{ questionCounter }}</h4>
+    <p>{{ currentQuestion }}</p>
+    <div class="button-container">
+      <button #myLabel (click)="evaluate(myLabel)">
+        {{ questionSet[questionCounter - 1].choices[0] }}
+      </button>
+      <button #myLabel (click)="evaluate(myLabel)">
+        {{ questionSet[questionCounter - 1].choices[1] }}
+      </button>
+      <button #myLabel (click)="evaluate(myLabel)">
+        {{ questionSet[questionCounter - 1].choices[2] }}
+      </button>
+      <button #myLabel (click)="evaluate(myLabel)">
+        {{ questionSet[questionCounter - 1].choices[3] }}
+      </button>
+    </div>
   </div>
 </main>

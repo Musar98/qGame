@@ -26,22 +26,6 @@ export class AppComponent {
   gameStarted: boolean = false;
   topic: string = "";
   username: string = "";
-  questions: any;
-
-  constructor(private openTriviaApiService: OpenTriviaApiService) {}
-
-  ngOnInit() {
-    if (!this.questions) {
-      this.openTriviaApiService
-        .getQuestions()
-        .then(
-          (triviaResponse) =>
-            (this.questions = triviaResponse
-              ? triviaResponse.results
-              : "Invalid Response"),
-        );
-    }
-  }
 
   isFormValid(): boolean {
     //todo when topics introduced

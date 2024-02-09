@@ -1,30 +1,24 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {CommonModule} from "@angular/common";
-import {Question} from "./Types";
-import {TriviaQuestion} from "../services/Types";
-import {remapTriviaQuestions} from "./Utils";
-
+import { Component, OnInit } from "@angular/core";
+import { CommonModule } from "@angular/common";
+import { Question } from "./Types";
+import { gameScreenUtils } from "./Utils";
+import { SpinnerComponent } from "./spinner/spinner.component";
 
 @Component({
-  selector: 'app-gamescreen',
+  selector: "app-gamescreen",
   standalone: true,
-  imports: [CommonModule],
-  templateUrl: './game-screen.component.html',
-  styleUrl: './game-screen.component.css'
+  imports: [CommonModule, SpinnerComponent],
+  templateUrl: "./game-screen.component.html",
+  styleUrl: "./game-screen.component.css",
 })
-
-
 export class GameScreenComponent implements OnInit {
   private timerValue: number = 0;
   private timerInterval: any;
-  private numberOfCorrectAnswers: number = 0;
+  protected numberOfCorrectAnswers: number = 0;
   protected questionCounter: number = 1;
-  questionSet: Question[] = [];
+  protected questionSet: Question[] = [];
   private currentSolution: string = "";
   protected currentQuestion: string = "";
-
-  @Input() questions: TriviaQuestion[] = [];
-
 
   evaluate(label: HTMLElement): void {
     const choice: string | null = label.textContent;
@@ -34,17 +28,27 @@ export class GameScreenComponent implements OnInit {
         this.numberOfCorrectAnswers += 1;
       }
       this.questionCounter += 1;
-      this.currentQuestion = this.questionSet[this.questionCounter - 1]?.question || '';
-      this.currentSolution = this.questionSet[this.questionCounter - 1]?.answer || '';
+      this.currentQuestion =
+        this.questionSet[this.questionCounter - 1]?.question || "";
+      this.currentSolution =
+        this.questionSet[this.questionCounter - 1]?.answer || "";
     }
   }
 
-
   ngOnInit(): void {
-    this.questionSet = remapTriviaQuestions(this.questions)
-    this.currentQuestion = this.questionSet[this.questionCounter - 1].question
-    this.currentSolution = this.questionSet[this.questionCounter - 1].answer
-    this.startTimer();
+    gameScreenUtils
+      .getTriviaQuestions()
+      .then((questions) => {
+        setTimeout(() => {
+          this.questionSet = questions;
+          this.currentQuestion =
+            this.questionSet[this.questionCounter - 1].question;
+          this.currentSolution =
+            this.questionSet[this.questionCounter - 1].answer;
+        }, 3000);
+        this.startTimer();
+      })
+      .catch((e) => e);
   }
 
   startTimer(): void {

@@ -52,6 +52,20 @@ button {
   );
 }
 
+button:hover {
+  background: linear-gradient(
+    to right,
+    #395876,
+    #536799 25%,
+    #5a6493 50%,
+    #536799 75%,
+    #395876
+  );
+
+  color: #73b5ce;
+
+}
+
 /* todo adjust styles for mobile view */
 
 @media (max-width: 767px) {

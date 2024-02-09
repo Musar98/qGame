@@ -35,6 +35,6 @@
     <button (click)="startGame()" [disabled]="!isFormValid()">Start</button>
   </div>
 </main>
-<app-gamescreen *ngIf="gameStarted" [questions]="questions"></app-gamescreen>
+<app-gamescreen *ngIf="gameStarted"></app-gamescreen>
 <app-pagefooter></app-pagefooter>
 <router-outlet />
