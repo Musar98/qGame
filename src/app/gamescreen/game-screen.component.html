@@ -1,5 +1,5 @@
 <main>
-  <div *ngIf="questionSet.length < 1">
+  <div class="spinner-container" *ngIf="questionSet.length < 1">
     <app-spinner></app-spinner>
   </div>
   <div *ngIf="questionSet && questionSet.length > 0">

@@ -1,3 +1,10 @@
+.spinner-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 12%;
+}
+
 h4 {
   font-size: 350%;
   margin-top: 0.5%;
@@ -63,7 +70,6 @@ button:hover {
   );
 
   color: #73b5ce;
-
 }
 
 /* todo adjust styles for mobile view */

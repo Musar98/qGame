@@ -45,8 +45,8 @@ export class GameScreenComponent implements OnInit {
             this.questionSet[this.questionCounter - 1].question;
           this.currentSolution =
             this.questionSet[this.questionCounter - 1].answer;
+          this.startTimer();
         }, 3000);
-        this.startTimer();
       })
       .catch((e) => e);
   }
