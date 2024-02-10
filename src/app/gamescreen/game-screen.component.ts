@@ -17,21 +17,21 @@ export class GameScreenComponent implements OnInit {
   protected numberOfCorrectAnswers: number = 0;
   protected questionCounter: number = 1;
   protected questionSet: Question[] = [];
-  private currentSolution: string = "";
-  protected currentQuestion: string = "";
+  protected currentQuestion: Question = {
+    question: "",
+    answer: "",
+    choices: [],
+  };
 
   evaluate(label: HTMLElement): void {
-    const choice: string | null = label.textContent;
+    const choice: string | undefined = label.textContent?.trim();
 
     if (choice && this.questionCounter < this.questionSet.length) {
-      if (choice === this.currentSolution) {
+      if (choice === this.currentQuestion.answer) {
         this.numberOfCorrectAnswers += 1;
       }
       this.questionCounter += 1;
-      this.currentQuestion =
-        this.questionSet[this.questionCounter - 1]?.question || "";
-      this.currentSolution =
-        this.questionSet[this.questionCounter - 1]?.answer || "";
+      this.currentQuestion = this.questionSet[this.questionCounter - 1];
     }
   }
 
@@ -39,14 +39,9 @@ export class GameScreenComponent implements OnInit {
     gameScreenUtils
       .getTriviaQuestions()
       .then((questions) => {
-        setTimeout(() => {
-          this.questionSet = questions;
-          this.currentQuestion =
-            this.questionSet[this.questionCounter - 1].question;
-          this.currentSolution =
-            this.questionSet[this.questionCounter - 1].answer;
-          this.startTimer();
-        }, 3000);
+        this.questionSet = questions;
+        this.currentQuestion = this.questionSet[this.questionCounter - 1];
+        this.startTimer();
       })
       .catch((e) => e);
   }
