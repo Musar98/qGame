@@ -1,7 +1,7 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, Input, OnInit } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { Question } from "./Types";
-import { gameScreenUtils } from "./Utils";
+import { gameScreenUtils } from "./GameScreenUtils";
 import { SpinnerComponent } from "./spinner/spinner.component";
 
 @Component({
@@ -23,6 +23,8 @@ export class GameScreenComponent implements OnInit {
     choices: [],
   };
 
+  @Input() category: string | undefined;
+
   evaluate(label: HTMLElement): void {
     const choice: string | undefined = label.textContent?.trim();
 
@@ -34,6 +36,7 @@ export class GameScreenComponent implements OnInit {
       this.currentQuestion = this.questionSet[this.questionCounter - 1];
     }
   }
+
 
   ngOnInit(): void {
     gameScreenUtils

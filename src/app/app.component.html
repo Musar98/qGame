@@ -2,24 +2,23 @@
 <main *ngIf="!gameStarted">
   <div>
     <h2>The Fiddy Question Game</h2>
-    <!--    <p>Challenge yourself with 50 questions on topics, that you believe, you know a lot about.</p>-->
     <p>Challenge yourself with 50 random questions.</p>
   </div>
 
   <div>
     <h3>
       Start now by
-      <!--    todo introduce topics with template: -->
-      <!--      choosing a-->
-      <!--      <select id="topic" name="topic" [(ngModel)]="topic" required>-->
-      <!--        <option id="defaultOptionTopic" value="" disabled selected hidden>Topic</option>-->
-      <!--        <option>Gaming</option>-->
-      <!--        <option>Series</option>-->
-      <!--        <option>Science</option>-->
-      <!--        <option>Sports</option>-->
-      <!--        <option>Nature</option>-->
-      <!--      </select> -->
-      <!--      and -->
+      choosing a
+<!--      <select id="category" name="category" [(ngModel)]="category" required>-->
+<!--        <option id="defaultOptionCategory" value="" disabled selected hidden>-->
+<!--          Category-->
+<!--        </option>-->
+<!--        <option>Any Category</option>-->
+<!--        <option *ngFor="let topicItem of categories" [value]="topicItem.name">-->
+<!--          {{ topicItem.name }}-->
+<!--        </option>-->
+<!--      </select>-->
+<!--      and -->
       entering a username:
       <input
         type="text"
@@ -35,6 +34,6 @@
     <button (click)="startGame()" [disabled]="!isFormValid()">Start</button>
   </div>
 </main>
-<app-gamescreen *ngIf="gameStarted"></app-gamescreen>
+<app-gamescreen *ngIf="gameStarted" [category]="category"></app-gamescreen>
 <app-pagefooter></app-pagefooter>
 <router-outlet />
