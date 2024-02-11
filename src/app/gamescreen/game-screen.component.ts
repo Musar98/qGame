@@ -22,6 +22,7 @@ export class GameScreenComponent implements OnInit {
     answer: "",
     choices: [],
   };
+  gameEnd: boolean = false;
 
   @Input() category: string | undefined;
 
@@ -34,9 +35,10 @@ export class GameScreenComponent implements OnInit {
       }
       this.questionCounter += 1;
       this.currentQuestion = this.questionSet[this.questionCounter - 1];
+    } else {
+      this.gameEnd = true;
     }
   }
-
 
   ngOnInit(): void {
     gameScreenUtils

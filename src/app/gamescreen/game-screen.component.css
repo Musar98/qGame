@@ -97,3 +97,31 @@ button:hover {
     margin-top: 8%;
   }
 }
+
+
+.endScreenContainer {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.questionContainer {
+  margin-bottom: 15px;
+}
+
+.question {
+  font-weight: bold;
+}
+
+.choices {
+  list-style-type: none;
+  padding: 0;
+}
+
+.choices li {
+  margin-top: 5px;
+  padding: 5px;
+}
+
+.correct {
+  background-color: #8cff7a; /* Light green for correct choices */
+}

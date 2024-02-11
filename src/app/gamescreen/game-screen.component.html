@@ -2,7 +2,8 @@
   <div class="spinner-container" *ngIf="questionSet.length < 1">
     <app-spinner></app-spinner>
   </div>
-  <div *ngIf="questionSet && questionSet.length > 0">
+
+  <div *ngIf="questionSet && questionSet.length > 0 && !gameEnd">
     <p id="timer">{{ formatTimer() }}</p>
     <h4>Question {{ questionCounter }}</h4>
     <p>{{ currentQuestion.question }}</p>
@@ -20,5 +21,15 @@
         {{ currentQuestion.choices[3] }}
       </button>
     </div>
+  </div>
+
+  <!--      todo make this more reasonable-->
+  <div class="endScreenContainer" *ngIf="gameEnd">
+    <span>{{ numberOfCorrectAnswers + "/" + questionCounter }}</span>
+    <ol>
+      <li *ngFor="let question of questionSet" [value]="question.question">
+        {{ question.question }}
+      </li>
+    </ol>
   </div>
 </main>

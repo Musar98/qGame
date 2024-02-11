@@ -8,7 +8,7 @@ import { TriviaCategoriesResponse, TriviaQuestionsResponse } from "./Types";
 export class OpenTriviaApiService {
   async getQuestions(): Promise<TriviaQuestionsResponse> {
     const response = await fetch(
-      "https://opentdb.com/api.php?amount=50&type=multiple",
+      "https://opentdb.com/api.php?amount=10&type=multiple",
     );
     return response.json();
   }
