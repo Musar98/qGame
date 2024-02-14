@@ -3,11 +3,12 @@ import { CommonModule } from "@angular/common";
 import { Question } from "./Types";
 import { gameScreenUtils } from "./GameScreenUtils";
 import { SpinnerComponent } from "./spinner/spinner.component";
+import {GameEndScreenComponent} from './game-end-screen/game-end-screen.component';
 
 @Component({
   selector: "app-gamescreen",
   standalone: true,
-  imports: [CommonModule, SpinnerComponent],
+  imports: [CommonModule, SpinnerComponent, GameEndScreenComponent],
   templateUrl: "./game-screen.component.html",
   styleUrl: "./game-screen.component.css",
 })
@@ -28,7 +29,7 @@ export class GameScreenComponent implements OnInit {
 
   evaluate(label: HTMLElement): void {
     const choice: string | undefined = label.textContent?.trim();
-
+    this.questionSet[this.questionCounter - 1].userChoice = choice;
     if (choice && this.questionCounter < this.questionSet.length) {
       if (choice === this.currentQuestion.answer) {
         this.numberOfCorrectAnswers += 1;

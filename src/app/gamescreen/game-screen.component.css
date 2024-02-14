@@ -1,3 +1,38 @@
+ul {
+  display: flex;
+  flex-direction: row;
+  list-style-type: none;
+  flex-wrap: wrap;
+  padding: 0;
+  cursor: default;
+}
+
+li {
+  flex: 0 0 calc(33.33% - 10px);
+  margin: 5px;
+  box-sizing: border-box;
+}
+
+li button {
+  background: darkslategray;
+  color: #3d7fff;
+  cursor: default;
+}
+
+li button.correctAnswer {
+  background: orange;
+}
+
+li button.chosenAnswer {
+  background: green;
+}
+
+
+
+li p {
+  font-size: 110%;
+}
+
 .spinner-container {
   display: flex;
   justify-content: center;
@@ -5,7 +40,8 @@
   margin-top: 12%;
 }
 
-h4 {
+h4,
+h5 {
   font-size: 350%;
   margin-top: 0.5%;
   margin-bottom: 0;
@@ -97,7 +133,6 @@ button:hover {
     margin-top: 8%;
   }
 }
-
 
 .endScreenContainer {
   margin-top: 20px;

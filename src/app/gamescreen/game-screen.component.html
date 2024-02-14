@@ -25,11 +25,18 @@
 
   <!--      todo make this more reasonable-->
   <div class="endScreenContainer" *ngIf="gameEnd">
-    <span>{{ numberOfCorrectAnswers + "/" + questionCounter }}</span>
-    <ol>
-      <li *ngFor="let question of questionSet" [value]="question.question">
-        {{ question.question }}
+    <h5>{{ numberOfCorrectAnswers + "/" + questionCounter }}</h5>
+    <ul>
+      <li *ngFor="let question of questionSet">
+        <p>{{ question.question }}</p>
+        <button
+          *ngFor="let choice of question.choices"
+          [value]="choice"
+          [ngClass]="{ correctAnswer: choice === question.answer, chosenAnswer:choice === question.userChoice }"
+        >
+          {{ choice }}
+        </button>
       </li>
-    </ol>
+    </ul>
   </div>
 </main>
