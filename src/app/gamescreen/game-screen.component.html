@@ -25,14 +25,24 @@
 
   <!--      todo make this more reasonable-->
   <div class="endScreenContainer" *ngIf="gameEnd">
-    <h5>{{ numberOfCorrectAnswers + "/" + questionCounter }}</h5>
+    <h5>
+      <span
+        >{{ numberOfCorrectAnswers + " / " + questionCounter }} in
+        {{ endTime }}</span
+      >
+    </h5>
     <ul>
       <li *ngFor="let question of questionSet">
         <p>{{ question.question }}</p>
         <button
           *ngFor="let choice of question.choices"
           [value]="choice"
-          [ngClass]="{ correctAnswer: choice === question.answer, chosenAnswer:choice === question.userChoice }"
+          [ngClass]="{
+            correctAnswer: choice === question.answer,
+            chosenAnswer:
+              choice === question.userChoice &&
+              question.userChoice !== question.answer
+          }"
         >
           {{ choice }}
         </button>

@@ -3,12 +3,11 @@ import { CommonModule } from "@angular/common";
 import { Question } from "./Types";
 import { gameScreenUtils } from "./GameScreenUtils";
 import { SpinnerComponent } from "./spinner/spinner.component";
-import {GameEndScreenComponent} from './game-end-screen/game-end-screen.component';
 
 @Component({
   selector: "app-gamescreen",
   standalone: true,
-  imports: [CommonModule, SpinnerComponent, GameEndScreenComponent],
+  imports: [CommonModule, SpinnerComponent],
   templateUrl: "./game-screen.component.html",
   styleUrl: "./game-screen.component.css",
 })
@@ -23,21 +22,26 @@ export class GameScreenComponent implements OnInit {
     answer: "",
     choices: [],
   };
-  gameEnd: boolean = false;
+  protected gameEnd: boolean = false;
+  protected endTime: string = "";
 
   @Input() category: string | undefined;
 
   evaluate(label: HTMLElement): void {
     const choice: string | undefined = label.textContent?.trim();
     this.questionSet[this.questionCounter - 1].userChoice = choice;
-    if (choice && this.questionCounter < this.questionSet.length) {
+    if (choice && this.questionCounter <= this.questionSet.length) {
       if (choice === this.currentQuestion.answer) {
         this.numberOfCorrectAnswers += 1;
       }
-      this.questionCounter += 1;
-      this.currentQuestion = this.questionSet[this.questionCounter - 1];
-    } else {
-      this.gameEnd = true;
+      if (this.questionCounter < this.questionSet.length) {
+        this.questionCounter += 1;
+        this.currentQuestion = this.questionSet[this.questionCounter - 1];
+      } else {
+        this.endTime = this.formatTimer();
+        clearInterval(this.timerInterval);
+        this.gameEnd = true;
+      }
     }
   }
 

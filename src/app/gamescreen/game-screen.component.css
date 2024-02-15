@@ -14,20 +14,25 @@ li {
 }
 
 li button {
-  background: darkslategray;
+  background: linear-gradient(
+    to right,
+    #243364,
+    #39548c 25%,
+    #404e70 50%,
+    #39548c 75%,
+    #243364
+  );
   color: #3d7fff;
   cursor: default;
 }
 
 li button.correctAnswer {
-  background: orange;
+  background: rgba(43, 133, 27, 0.46);
 }
 
 li button.chosenAnswer {
-  background: green;
+  background: rgba(208, 78, 32, 0.72);
 }
-
-
 
 li p {
   font-size: 110%;
@@ -46,7 +51,18 @@ h5 {
   margin-top: 0.5%;
   margin-bottom: 0;
   color: #a4d6f3;
-  text-shadow: #757679 3px 2px 2px;
+  text-shadow: #757679 5px 3px 5px;
+}
+
+h5 {
+  color: whitesmoke;
+}
+
+
+span {
+  border-radius: 15px;
+  box-shadow: aliceblue 1px 1px 12px 2px;
+  padding: 0.25%;
 }
 
 p {
@@ -56,7 +72,7 @@ p {
 }
 
 #timer {
-  margin-top: 1%;
+  margin-top: 0.5%;
   margin-bottom: 0.5%;
   font-size: 3em;
   color: #94bbff;
@@ -137,26 +153,4 @@ button:hover {
 .endScreenContainer {
   margin-top: 20px;
   text-align: center;
-}
-
-.questionContainer {
-  margin-bottom: 15px;
-}
-
-.question {
-  font-weight: bold;
-}
-
-.choices {
-  list-style-type: none;
-  padding: 0;
-}
-
-.choices li {
-  margin-top: 5px;
-  padding: 5px;
-}
-
-.correct {
-  background-color: #8cff7a; /* Light green for correct choices */
 }
