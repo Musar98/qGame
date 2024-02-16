@@ -26,10 +26,13 @@
   <!--      todo make this more reasonable-->
   <div class="endScreenContainer" *ngIf="gameEnd">
     <h5>
-      <span
-        >{{ numberOfCorrectAnswers + " / " + questionCounter }} in
-        {{ endTime }}</span
-      >
+      <span>
+        Congratulations,
+        <span id="username">{{ username }}</span>!
+        {{"You scored: " + numberOfCorrectAnswers + " / " + questionCounter }} in
+        {{ endTime }}
+</span>
+
     </h5>
     <ul>
       <li *ngFor="let question of questionSet">

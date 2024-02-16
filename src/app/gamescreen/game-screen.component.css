@@ -55,9 +55,15 @@ h5 {
 }
 
 h5 {
-  color: whitesmoke;
+  color: #87a4b9;
+  text-shadow: 1px 1px 1px #ffffff;
 }
 
+#username {
+  color:royalblue;
+  box-shadow: none;
+  padding:0;
+}
 
 span {
   border-radius: 15px;

@@ -26,6 +26,7 @@ export class GameScreenComponent implements OnInit {
   protected endTime: string = "";
 
   @Input() category: string | undefined;
+  @Input() username: string | undefined;
 
   evaluate(label: HTMLElement): void {
     const choice: string | undefined = label.textContent?.trim();

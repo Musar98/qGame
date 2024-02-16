@@ -8,7 +8,7 @@
   <div>
     <h3>
       Start now by
-      choosing a
+<!--      choosing a-->
 <!--      <select id="category" name="category" [(ngModel)]="category" required>-->
 <!--        <option id="defaultOptionCategory" value="" disabled selected hidden>-->
 <!--          Category-->
@@ -34,6 +34,6 @@
     <button (click)="startGame()" [disabled]="!isFormValid()">Start</button>
   </div>
 </main>
-<app-gamescreen *ngIf="gameStarted" [category]="category"></app-gamescreen>
+<app-gamescreen *ngIf="gameStarted" [category]="category" [username]="username"></app-gamescreen>
 <app-pagefooter></app-pagefooter>
 <router-outlet />
