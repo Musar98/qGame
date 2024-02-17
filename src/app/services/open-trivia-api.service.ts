@@ -6,11 +6,16 @@ import { TriviaCategoriesResponse, TriviaQuestionsResponse } from "./Types";
   providedIn: "root",
 })
 export class OpenTriviaApiService {
-  async getQuestions(): Promise<TriviaQuestionsResponse> {
-    const response = await fetch(
-      "https://opentdb.com/api.php?amount=50&type=multiple",
-    );
-    return response.json();
+  async getQuestions(): Promise<TriviaQuestionsResponse | undefined> {
+    try {
+      const response = await fetch(
+        "https://opentdb.com/api.php?amount=50&type=multiple",
+      );
+      return response.json();
+    } catch (e) {
+      console.error("There was an error fetching questions from opentdb:", e);
+      return;
+    }
   }
 
   async getCategories(): Promise<TriviaCategoriesResponse> {

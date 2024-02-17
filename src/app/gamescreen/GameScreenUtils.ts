@@ -1,6 +1,7 @@
 import { TriviaQuestion } from "../services/Types";
 import { Question } from "./Types";
 import { OpenTriviaApiService } from "../services/open-trivia-api.service";
+import {DEMO_QUESTIONS} from './Constants';
 
 class GameScreenUtils {
   constructor(private openTriviaApiService: OpenTriviaApiService) {}
@@ -50,13 +51,13 @@ class GameScreenUtils {
 
   public async getTriviaQuestions(): Promise<Question[]> {
     const triviaQuestions = await this.openTriviaApiService.getQuestions();
-    if (!triviaQuestions.results) {
+    if (!triviaQuestions?.results) {
       console.error({
         response: triviaQuestions,
-        results: triviaQuestions.results,
-        status_code: triviaQuestions.response_code,
+        results: triviaQuestions?.results,
+        status_code: triviaQuestions?.response_code,
       });
-      return [];
+      return DEMO_QUESTIONS;
     } else {
       return this.remapTriviaQuestions(triviaQuestions.results);
     }

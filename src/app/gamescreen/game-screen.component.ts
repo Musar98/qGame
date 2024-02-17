@@ -54,7 +54,7 @@ export class GameScreenComponent implements OnInit {
         this.currentQuestion = this.questionSet[this.questionCounter - 1];
         this.startTimer();
       })
-      .catch((e) => e);
+      .catch((e) => console.error(e));
   }
 
   startTimer(): void {
