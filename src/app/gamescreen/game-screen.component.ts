@@ -6,7 +6,6 @@ import { SpinnerComponent } from "./spinner/spinner.component";
 
 @Component({
   selector: "app-gamescreen",
-  standalone: true,
   imports: [CommonModule, SpinnerComponent],
   templateUrl: "./game-screen.component.html",
   styleUrl: "./game-screen.component.css",
