@@ -26,6 +26,7 @@ export class GameScreenComponent implements OnInit {
 
   @Input() category: string | undefined;
   @Input() username: string | undefined;
+  @Input() questionCount: number = 50;
 
   evaluate(label: HTMLElement): void {
     const choice: string | undefined = label.textContent?.trim();
@@ -47,7 +48,7 @@ export class GameScreenComponent implements OnInit {
 
   ngOnInit(): void {
     gameScreenUtils
-      .getTriviaQuestions()
+      .getTriviaQuestions(this.questionCount)
       .then((questions) => {
         this.questionSet = questions;
         this.currentQuestion = this.questionSet[this.questionCounter - 1];

@@ -49,8 +49,8 @@ class GameScreenUtils {
     });
   }
 
-  public async getTriviaQuestions(): Promise<Question[]> {
-    const triviaQuestions = await this.openTriviaApiService.getQuestions();
+  public async getTriviaQuestions(amount:number=50): Promise<Question[]> {
+    const triviaQuestions = await this.openTriviaApiService.getQuestions(amount);
     if (!triviaQuestions?.results) {
       console.error({
         response: triviaQuestions,

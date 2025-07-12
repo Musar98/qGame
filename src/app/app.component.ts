@@ -26,6 +26,7 @@ export class AppComponent {
   gameStarted: boolean = false;
   category: string = "";
   username: string = "";
+  questionCount:number = 50;
   categories: Category[] = [
     { id: 9, name: "General Knowledge" },
     { id: 10, name: "Entertainment: Books" },
@@ -56,8 +57,14 @@ export class AppComponent {
   isFormValid(): boolean {
     //todo when topics introduced
     // return this.topic !== '' && this.username !== '';
-    return this.username !== "";
+    const isUsernameValid = this.username.trim() !== "";
+    const isQuestionCountValid =
+      this.questionCount === undefined ||
+      (this.questionCount >= 1 && this.questionCount <= 50);
+
+    return isUsernameValid && isQuestionCountValid;
   }
+
 
   startGame(): void {
     if (this.isFormValid()) {

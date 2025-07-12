@@ -1,25 +1,40 @@
 <app-pageheader></app-pageheader>
 <main *ngIf="!gameStarted">
   <div>
-    <h2>The Fiddy Question Game</h2>
-    <p>Challenge yourself with 50 random questions.</p>
+    <h2>Random Question Game</h2>
+    <p>
+      Challenge yourself with
+      <input
+        type="number"
+        id="questionCount"
+        name="questionCount"
+        [(ngModel)]="questionCount"
+        min="1"
+        max="50"
+        placeholder="50"
+      /> random questions.
+      <br />
+      <span *ngIf="questionCount < 1 || questionCount > 50" style="color: red; font-size: smaller">
+    Please enter a number between 1 and 50.
+  </span>
+    </p>
   </div>
 
   <div>
     <h3>
-      Start now by
-<!--      choosing a-->
-<!--      <select id="category" name="category" [(ngModel)]="category" required>-->
-<!--        <option id="defaultOptionCategory" value="" disabled selected hidden>-->
-<!--          Category-->
-<!--        </option>-->
-<!--        <option>Any Category</option>-->
-<!--        <option *ngFor="let topicItem of categories" [value]="topicItem.name">-->
-<!--          {{ topicItem.name }}-->
-<!--        </option>-->
-<!--      </select>-->
-<!--      and -->
-      entering a username:
+      Pick a
+      <!--      choosing a-->
+      <!--      <select id="category" name="category" [(ngModel)]="category" required>-->
+      <!--        <option id="defaultOptionCategory" value="" disabled selected hidden>-->
+      <!--          Category-->
+      <!--        </option>-->
+      <!--        <option>Any Category</option>-->
+      <!--        <option *ngFor="let topicItem of categories" [value]="topicItem.name">-->
+      <!--          {{ topicItem.name }}-->
+      <!--        </option>-->
+      <!--      </select>-->
+      <!--      and -->
+      username:
       <input
         type="text"
         id="username"
@@ -34,6 +49,13 @@
     <button (click)="startGame()" [disabled]="!isFormValid()">Start</button>
   </div>
 </main>
-<app-gamescreen *ngIf="gameStarted" [category]="category" [username]="username"></app-gamescreen>
+
+<app-gamescreen
+  *ngIf="gameStarted"
+  [category]="category"
+  [username]="username"
+  [questionCount]="questionCount || 50"
+></app-gamescreen>
+
 <app-pagefooter></app-pagefooter>
 <router-outlet />
