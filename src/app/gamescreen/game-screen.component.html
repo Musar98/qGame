@@ -1,55 +1,63 @@
 <main>
-  <div class="spinner-container" *ngIf="questionSet.length < 1">
-    <app-spinner></app-spinner>
-  </div>
-
-  <div *ngIf="questionSet && questionSet.length > 0 && !gameEnd">
-    <p id="timer">{{ formatTimer() }}</p>
-    <h4>Question {{ questionCounter }}</h4>
-    <p>{{ currentQuestion.question }}</p>
-    <div class="button-container">
-      <button #answerOne (click)="evaluate(answerOne)">
-        {{ currentQuestion.choices[0] }}
-      </button>
-      <button #answerTwo (click)="evaluate(answerTwo)">
-        {{ currentQuestion.choices[1] }}
-      </button>
-      <button #answerThree (click)="evaluate(answerThree)">
-        {{ currentQuestion.choices[2] }}
-      </button>
-      <button #answerFour (click)="evaluate(answerFour)">
-        {{ currentQuestion.choices[3] }}
-      </button>
+  @if (questionSet.length < 1) {
+    <div class="spinner-container">
+      <app-spinner></app-spinner>
     </div>
-  </div>
+  }
+
+  @if (questionSet && questionSet.length > 0 && !gameEnd) {
+    <div>
+      <p id="timer">{{ formatTimer() }}</p>
+      <h4>Question {{ questionCounter }}</h4>
+      <p>{{ currentQuestion.question }}</p>
+      <div class="button-container">
+        <button #answerOne (click)="evaluate(answerOne)">
+          {{ currentQuestion.choices[0] }}
+        </button>
+        <button #answerTwo (click)="evaluate(answerTwo)">
+          {{ currentQuestion.choices[1] }}
+        </button>
+        <button #answerThree (click)="evaluate(answerThree)">
+          {{ currentQuestion.choices[2] }}
+        </button>
+        <button #answerFour (click)="evaluate(answerFour)">
+          {{ currentQuestion.choices[3] }}
+        </button>
+      </div>
+    </div>
+  }
 
   <!--      todo make this more reasonable-->
-  <div class="endScreenContainer" *ngIf="gameEnd">
-    <h5>
-      <span>
-        Congratulations,
-        <span id="username">{{ username }}</span>!
-        {{"You scored: " + numberOfCorrectAnswers + " / " + questionCounter }} in
-        {{ endTime }}
-</span>
-
-    </h5>
-    <ul>
-      <li *ngFor="let question of questionSet">
-        <p>{{ question.question }}</p>
-        <button
-          *ngFor="let choice of question.choices"
-          [value]="choice"
+  @if (gameEnd) {
+    <div class="endScreenContainer">
+      <h5>
+        <span>
+          Congratulations,
+          <span id="username">{{ username }}</span>!
+          {{"You scored: " + numberOfCorrectAnswers + " / " + questionCounter }} in
+          {{ endTime }}
+        </span>
+      </h5>
+      <ul>
+        @for (question of questionSet; track question) {
+          <li>
+            <p>{{ question.question }}</p>
+            @for (choice of question.choices; track choice) {
+              <button
+                [value]="choice"
           [ngClass]="{
             correctAnswer: choice === question.answer,
             chosenAnswer:
               choice === question.userChoice &&
               question.userChoice !== question.answer
           }"
-        >
-          {{ choice }}
-        </button>
-      </li>
-    </ul>
-  </div>
+                >
+                {{ choice }}
+              </button>
+            }
+          </li>
+        }
+      </ul>
+    </div>
+  }
 </main>

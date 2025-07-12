@@ -2,7 +2,7 @@ import { Component } from "@angular/core";
 import { RouterOutlet } from "@angular/router";
 import { PageFooterComponent } from "./pagefooter/page-footer.component";
 import { PageHeaderComponent } from "./pageheader/page-header.component";
-import { CommonModule } from "@angular/common";
+
 import { GameScreenComponent } from "./gamescreen/game-screen.component";
 import { FormsModule } from "@angular/forms";
 import { OpenTriviaApiService } from "./services/open-trivia-api.service";
@@ -11,13 +11,12 @@ import { Category } from "./services/Types";
 @Component({
     selector: "app-root",
     imports: [
-        RouterOutlet,
-        PageFooterComponent,
-        PageHeaderComponent,
-        CommonModule,
-        GameScreenComponent,
-        FormsModule,
-    ],
+    RouterOutlet,
+    PageFooterComponent,
+    PageHeaderComponent,
+    GameScreenComponent,
+    FormsModule
+],
     templateUrl: "./app.component.html",
     styleUrl: "./app.component.css",
     providers: [OpenTriviaApiService]
