@@ -1,39 +1,41 @@
 <app-pageheader></app-pageheader>
-<main *ngIf="!gameStarted">
-  <div>
-    <h2>The Fiddy Question Game</h2>
-    <p>Challenge yourself with 50 random questions.</p>
-  </div>
-
-  <div>
-    <h3>
-      Start now by
-<!--      choosing a-->
-<!--      <select id="category" name="category" [(ngModel)]="category" required>-->
-<!--        <option id="defaultOptionCategory" value="" disabled selected hidden>-->
-<!--          Category-->
-<!--        </option>-->
-<!--        <option>Any Category</option>-->
-<!--        <option *ngFor="let topicItem of categories" [value]="topicItem.name">-->
-<!--          {{ topicItem.name }}-->
-<!--        </option>-->
-<!--      </select>-->
-<!--      and -->
-      entering a username:
-      <input
-        type="text"
-        id="username"
-        name="username"
-        [(ngModel)]="username"
-        placeholder="Username"
-        required
-        (keyup.enter)="onEnterKey()"
-      />
-    </h3>
-
-    <button (click)="startGame()" [disabled]="!isFormValid()">Start</button>
-  </div>
+@if (!gameStarted) {
+  <main>
+    <div>
+      <h2>The Fiddy Question Game</h2>
+      <p>Challenge yourself with 50 random questions.</p>
+    </div>
+    <div>
+      <h3>
+        Start now by
+        <!--      choosing a-->
+        <!--      <select id="category" name="category" [(ngModel)]="category" required>-->
+        <!--        <option id="defaultOptionCategory" value="" disabled selected hidden>-->
+        <!--          Category-->
+      <!--        </option>-->
+      <!--        <option>Any Category</option>-->
+      <!--        <option *ngFor="let topicItem of categories" [value]="topicItem.name">-->
+      <!--          {{ topicItem.name }}-->
+    <!--        </option>-->
+  <!--      </select>-->
+  <!--      and -->
+  entering a username:
+  <input
+    type="text"
+    id="username"
+    name="username"
+    [(ngModel)]="username"
+    placeholder="Username"
+    required
+    (keyup.enter)="onEnterKey()"
+    />
+</h3>
+<button (click)="startGame()" [disabled]="!isFormValid()">Start</button>
+</div>
 </main>
-<app-gamescreen *ngIf="gameStarted" [category]="category" [username]="username"></app-gamescreen>
+}
+@if (gameStarted) {
+  <app-gamescreen [category]="category" [username]="username"></app-gamescreen>
+}
 <app-pagefooter></app-pagefooter>
 <router-outlet />
