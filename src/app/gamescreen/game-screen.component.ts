@@ -5,11 +5,10 @@ import { gameScreenUtils } from "./GameScreenUtils";
 import { SpinnerComponent } from "./spinner/spinner.component";
 
 @Component({
-  selector: "app-gamescreen",
-  standalone: true,
-  imports: [CommonModule, SpinnerComponent],
-  templateUrl: "./game-screen.component.html",
-  styleUrl: "./game-screen.component.css",
+    selector: "app-gamescreen",
+    imports: [CommonModule, SpinnerComponent],
+    templateUrl: "./game-screen.component.html",
+    styleUrl: "./game-screen.component.css"
 })
 export class GameScreenComponent implements OnInit {
   private timerValue: number = 0;

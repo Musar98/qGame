@@ -9,19 +9,18 @@ import { OpenTriviaApiService } from "./services/open-trivia-api.service";
 import { Category } from "./services/Types";
 
 @Component({
-  selector: "app-root",
-  standalone: true,
-  imports: [
-    RouterOutlet,
-    PageFooterComponent,
-    PageHeaderComponent,
-    CommonModule,
-    GameScreenComponent,
-    FormsModule,
-  ],
-  templateUrl: "./app.component.html",
-  styleUrl: "./app.component.css",
-  providers: [OpenTriviaApiService],
+    selector: "app-root",
+    imports: [
+        RouterOutlet,
+        PageFooterComponent,
+        PageHeaderComponent,
+        CommonModule,
+        GameScreenComponent,
+        FormsModule,
+    ],
+    templateUrl: "./app.component.html",
+    styleUrl: "./app.component.css",
+    providers: [OpenTriviaApiService]
 })
 export class AppComponent {
   gameStarted: boolean = false;
