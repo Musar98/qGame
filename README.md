@@ -1,4 +1,4 @@
-# qGame — The Fiddy Question Game
+# qGame — The Trivia Question Game
 
 A responsive, accessible trivia quiz built with [Angular 22](https://angular.dev).
 Pick a category and question count, answer the multiple-choice questions from the
