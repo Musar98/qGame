@@ -1,63 +1,59 @@
-<main>
-  @if (questionSet.length < 1) {
-    <div class="spinner-container">
+<main class="game-screen">
+  @if (isLoading()) {
+    <div class="spinner-container" role="status" aria-label="Loading questions">
       <app-spinner></app-spinner>
     </div>
-  }
-
-  @if (questionSet && questionSet.length > 0 && !gameEnd) {
-    <div>
-      <p id="timer">{{ formatTimer() }}</p>
-      <h4>Question {{ questionCounter }}</h4>
-      <p>{{ currentQuestion.question }}</p>
-      <div class="button-container">
-        <button #answerOne (click)="evaluate(answerOne)">
-          {{ currentQuestion.choices[0] }}
-        </button>
-        <button #answerTwo (click)="evaluate(answerTwo)">
-          {{ currentQuestion.choices[1] }}
-        </button>
-        <button #answerThree (click)="evaluate(answerThree)">
-          {{ currentQuestion.choices[2] }}
-        </button>
-        <button #answerFour (click)="evaluate(answerFour)">
-          {{ currentQuestion.choices[3] }}
-        </button>
-      </div>
+  } @else if (loadFailed()) {
+    <div class="error-state">
+      <p>Sorry, the questions could not be loaded.</p>
+      <button type="button" (click)="retry()">Try again</button>
     </div>
-  }
-
-  <!--      todo make this more reasonable-->
-  @if (gameEnd) {
-    <div class="endScreenContainer">
-      <h5>
-        <span>
-          Congratulations,
-          <span id="username">{{ username }}</span>!
-          {{"You scored: " + numberOfCorrectAnswers + " / " + questionCounter }} in
-          {{ endTime }}
-        </span>
+  } @else if (!gameEnd()) {
+    <section aria-labelledby="question-heading">
+      <p id="timer" aria-live="off" aria-label="Elapsed time">
+        {{ formattedTimer() }}
+      </p>
+      <p class="progress">Question {{ questionNumber() }} of {{ questionSet().length }}</p>
+      @if (currentQuestion(); as question) {
+        <h4 id="question-heading">{{ question.question }}</h4>
+        <div class="button-container" role="group" aria-label="Answer choices">
+          @for (choice of question.choices; track choice) {
+            <button type="button" (click)="evaluate(choice)">
+              {{ choice }}
+            </button>
+          }
+        </div>
+      }
+    </section>
+  } @else {
+    <section class="end-screen" aria-labelledby="results-heading">
+      <h5 id="results-heading">
+        Congratulations, <span id="username">{{ username() }}</span
+        >! You scored {{ correctCount() }} / {{ questionSet().length }} in
+        {{ endTime() }}
       </h5>
-      <ul>
-        @for (question of questionSet; track question) {
+      <ul class="review-list">
+        @for (question of questionSet(); track $index) {
           <li>
-            <p>{{ question.question }}</p>
-            @for (choice of question.choices; track choice) {
-              <button
-                [value]="choice"
-          [ngClass]="{
-            correctAnswer: choice === question.answer,
-            chosenAnswer:
-              choice === question.userChoice &&
-              question.userChoice !== question.answer
-          }"
+            <p class="review-question">{{ question.question }}</p>
+            <div class="review-choices">
+              @for (choice of question.choices; track choice) {
+                <button
+                  type="button"
+                  disabled
+                  [value]="choice"
+                  [class.correct-answer]="choice === question.answer"
+                  [class.wrong-choice]="
+                    choice === question.userChoice && question.userChoice !== question.answer
+                  "
                 >
-                {{ choice }}
-              </button>
-            }
+                  {{ choice }}
+                </button>
+              }
+            </div>
           </li>
         }
       </ul>
-    </div>
+    </section>
   }
 </main>

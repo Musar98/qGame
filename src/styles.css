@@ -1,60 +1,85 @@
+:root {
+  color-scheme: dark;
+  --page-max-width: 75rem;
+  --color-accent: #94bbff;
+  --color-footer-bg: #253762;
+  --focus-ring: #94bbff;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 body,
 html {
-  height: 100%;
+  min-height: 100%;
   margin: 0;
-  background: linear-gradient(
-    to right,
-    #282c34,
-    #1b3294 25%,
-    #283359 50%,
-    #1b3294 75%,
-    #282c34
-  );
+  background: linear-gradient(to right, #282c34, #1b3294 25%, #283359 50%, #1b3294 75%, #282c34);
+  background-attachment: fixed;
   text-align: center;
-  font-family: "Comic Sans MS", sans-serif;
+  font-family: 'Comic Sans MS', 'Chalkboard SE', sans-serif;
+  color: #fff;
+  line-height: 1.5;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
 }
 
 app-root {
   display: flex;
   flex-direction: column;
-  min-height: 100%;
+  min-height: 100dvh;
+}
+
+app-root > main,
+app-root main {
+  flex: 1;
 }
 
 header {
   display: flex;
   flex-direction: column;
-}
-
-div {
-  margin-top: 2%;
-}
-
-main {
-  flex: 1;
-}
-
-/* todo check is this necessary?*/
-app-gamescreen {
-  min-height: 100%;
+  align-items: center;
 }
 
 app-pagefooter {
   margin-top: auto;
   display: flex;
   justify-content: center;
-  background: linear-gradient(
-    to right,
-    #282c34,
-    #253762 50%,
-    #253762 75%,
-    #282c34
-  );
-  padding: 1%;
+  background: linear-gradient(to right, #282c34, #253762 50%, #253762 75%, #282c34);
+  padding: 1rem;
   border-top: solid #253762;
 }
 
 footer a {
   text-decoration: none;
   color: cornflowerblue;
-  font-size: 125%;
+  font-size: 1.125rem;
+}
+
+footer a:hover {
+  text-decoration: underline;
+}
+
+footer a:focus-visible {
+  outline: 3px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+:focus-visible {
+  outline: 3px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
 }

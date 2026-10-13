@@ -1,41 +1,38 @@
 <app-pageheader></app-pageheader>
 @if (!gameStarted) {
-  <main>
-    <div>
+  <main class="start-screen">
+    <div class="intro">
       <h2>The Fiddy Question Game</h2>
       <p>Challenge yourself with 50 random questions.</p>
     </div>
-    <div>
+    <form class="start-form" (ngSubmit)="startGame()">
       <h3>
-        Start now by
-        <!--      choosing a-->
-        <!--      <select id="category" name="category" [(ngModel)]="category" required>-->
-        <!--        <option id="defaultOptionCategory" value="" disabled selected hidden>-->
-        <!--          Category-->
-      <!--        </option>-->
-      <!--        <option>Any Category</option>-->
-      <!--        <option *ngFor="let topicItem of categories" [value]="topicItem.name">-->
-      <!--          {{ topicItem.name }}-->
-    <!--        </option>-->
-  <!--      </select>-->
-  <!--      and -->
-  entering a username:
-  <input
-    type="text"
-    id="username"
-    name="username"
-    [(ngModel)]="username"
-    placeholder="Username"
-    required
-    (keyup.enter)="onEnterKey()"
-    />
-</h3>
-<button (click)="startGame()" [disabled]="!isFormValid()">Start</button>
-</div>
-</main>
+        <label for="category">Choose a category</label>
+        <select id="category" name="category" [(ngModel)]="categoryId">
+          <option [ngValue]="undefined">Any Category</option>
+          @for (topicItem of categories; track topicItem.id) {
+            <option [ngValue]="topicItem.id">{{ topicItem.name }}</option>
+          }
+        </select>
+        <label for="username">and enter a username:</label>
+        <input
+          type="text"
+          id="username"
+          name="username"
+          [(ngModel)]="username"
+          placeholder="Username"
+          required
+          minlength="1"
+          maxlength="30"
+          autocomplete="username"
+          (keyup.enter)="onEnterKey()"
+        />
+      </h3>
+      <button type="submit" [disabled]="!isFormValid()">Start</button>
+    </form>
+  </main>
 }
 @if (gameStarted) {
-  <app-gamescreen [category]="category" [username]="username"></app-gamescreen>
+  <app-gamescreen [categoryId]="categoryId" [username]="username"></app-gamescreen>
 }
 <app-pagefooter></app-pagefooter>
-<router-outlet />

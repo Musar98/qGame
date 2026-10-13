@@ -1,25 +1,55 @@
-//https://opentdb.com/api_config.php
-import { Injectable } from "@angular/core";
-import { TriviaCategoriesResponse, TriviaQuestionsResponse } from "./Types";
+import { Injectable, inject } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { firstValueFrom } from 'rxjs';
+import type { TriviaCategoriesResponse, TriviaQuestionsResponse } from './types';
 
-@Injectable({
-  providedIn: "root",
-})
+const API_BASE_URL = 'https://opentdb.com';
+const DEFAULT_QUESTION_COUNT = 50;
+
+/**
+ * Thin wrapper around the Open Trivia Database API.
+ * See https://opentdb.com/api_config.php
+ */
+@Injectable({ providedIn: 'root' })
 export class OpenTriviaApiService {
-  async getQuestions(): Promise<TriviaQuestionsResponse | undefined> {
+  private readonly http = inject(HttpClient);
+
+  async getQuestions(
+    amount = DEFAULT_QUESTION_COUNT,
+    categoryId?: number,
+  ): Promise<TriviaQuestionsResponse | undefined> {
     try {
-      const response = await fetch(
-        "https://opentdb.com/api.php?amount=50&type=multiple",
+      const params: Record<string, string | number> = {
+        amount,
+        type: 'multiple',
+      };
+      if (categoryId) {
+        params['category'] = categoryId;
+      }
+      const response = await firstValueFrom(
+        this.http.get<TriviaQuestionsResponse>(`${API_BASE_URL}/api.php`, {
+          params,
+        }),
       );
-      return response.json();
-    } catch (e) {
-      console.error("There was an error fetching questions from opentdb:", e);
-      return;
+      if (!response || !Array.isArray(response.results)) {
+        console.error('Unexpected questions response from opentdb:', response);
+        return undefined;
+      }
+      return response;
+    } catch (error) {
+      console.error('There was an error fetching questions from opentdb:', error);
+      return undefined;
     }
   }
 
-  async getCategories(): Promise<TriviaCategoriesResponse> {
-    const response = await fetch("https://opentdb.com/api_category.php");
-    return response.json();
+  async getCategories(): Promise<TriviaCategoriesResponse | undefined> {
+    try {
+      return await firstValueFrom(
+        this.http.get<TriviaCategoriesResponse>(`${API_BASE_URL}/api_category.php`),
+      );
+    } catch (error) {
+      console.error('There was an error fetching categories from opentdb:', error);
+      return undefined;
+    }
   }
 }

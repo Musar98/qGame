@@ -1,47 +1,75 @@
-h2 {
-  font-size: 2.5em;
+.start-screen {
+  width: min(100% - 2rem, 44rem);
+  margin-inline: auto;
+  padding-block: 1rem 2.5rem;
+}
+
+.intro h2 {
+  font-size: clamp(1.75rem, 6vw, 2.5rem);
   color: lightslategray;
   text-shadow: 1px 1px 2px #c6cbd9;
   margin-bottom: 0;
+  text-wrap: balance;
 }
 
-p {
-  font-size: 1.2em;
+.intro p {
+  font-size: clamp(1rem, 3vw, 1.2rem);
   color: slategrey;
-  margin-bottom: 3%;
+  margin-bottom: 1.5rem;
 }
 
-h3 {
-  font-size: 1.5em;
+.start-form h3 {
+  display: grid;
+  gap: 0.75rem;
+  font-size: clamp(1.1rem, 3.5vw, 1.5rem);
   color: #87a4b9;
   text-shadow: 1px 1px 1px #94bbff;
+  font-weight: 600;
 }
 
-select,
-input {
-  font-size: 0.7em;
+.start-form select,
+.start-form input {
+  width: 100%;
+  max-width: 28rem;
+  margin-inline: auto;
+  padding: 0.6rem 0.75rem;
+  font-size: 1rem;
   border: solid #cad7ff;
   border-radius: 5px;
   background: lightgrey;
+  color: #1b2340;
 }
 
-button {
+.start-form label {
+  display: block;
+}
+
+.start-form button {
   font-family: inherit;
-  margin-top: 1%;
-  font-size: 1.2em;
+  margin-top: 1.25rem;
+  font-size: 1.2rem;
   background-color: #445b73;
   color: #cad7ff;
   border: solid #6375ce;
   border-radius: 5px;
   cursor: pointer;
-  width: 10rem;
-  height: 3rem;
+  width: min(100%, 10rem);
+  min-height: 3rem;
+  padding: 0.5rem 1rem;
 }
 
-button:disabled {
+.start-form button:disabled {
   opacity: 40%;
+  cursor: not-allowed;
 }
 
-button:not(:disabled):hover {
+.start-form button:not(:disabled):hover {
   background-color: #6387af;
+}
+
+.start-form button:focus-visible,
+.start-form select:focus-visible,
+.start-form input:focus-visible {
+  outline: 3px solid #94bbff;
+  outline-offset: 2px;
 }

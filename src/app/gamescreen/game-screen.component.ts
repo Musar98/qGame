@@ -1,81 +1,145 @@
-import { Component, Input, OnInit } from "@angular/core";
-import { CommonModule } from "@angular/common";
-import { Question } from "./Types";
-import { gameScreenUtils } from "./GameScreenUtils";
-import { SpinnerComponent } from "./spinner/spinner.component";
+import {
+  ChangeDetectorRef,
+  Component,
+  NgZone,
+  OnDestroy,
+  OnInit,
+  computed,
+  inject,
+  input,
+  signal,
+} from '@angular/core';
+import { GameScreenUtils } from './game-screen.utils';
+import { SpinnerComponent } from './spinner/spinner.component';
+import type { Question } from './types';
+
+export function padZero(value: number): string {
+  return value < 10 ? `0${value}` : `${value}`;
+}
+
+export function formatDuration(totalSeconds: number): string {
+  const hours = Math.floor(totalSeconds / 3600);
+  const minutes = Math.floor((totalSeconds % 3600) / 60);
+  const seconds = totalSeconds % 60;
+  return `${padZero(hours)}:${padZero(minutes)}:${padZero(seconds)}`;
+}
 
 @Component({
-    selector: "app-gamescreen",
-    imports: [CommonModule, SpinnerComponent],
-    templateUrl: "./game-screen.component.html",
-    styleUrl: "./game-screen.component.css"
+  selector: 'app-gamescreen',
+  imports: [SpinnerComponent],
+  templateUrl: './game-screen.component.html',
+  styleUrl: './game-screen.component.css',
 })
-export class GameScreenComponent implements OnInit {
-  private timerValue: number = 0;
-  private timerInterval: any;
-  protected numberOfCorrectAnswers: number = 0;
-  protected questionCounter: number = 1;
-  protected questionSet: Question[] = [];
-  protected currentQuestion: Question = {
-    question: "",
-    answer: "",
-    choices: [],
-  };
-  protected gameEnd: boolean = false;
-  protected endTime: string = "";
+export class GameScreenComponent implements OnInit, OnDestroy {
+  readonly categoryId = input<number | undefined>(undefined);
+  readonly username = input<string>('Guest');
 
-  @Input() category: string | undefined;
-  @Input() username: string | undefined;
+  private readonly gameScreenUtils = inject(GameScreenUtils);
+  private readonly ngZone = inject(NgZone);
+  private readonly cdr = inject(ChangeDetectorRef);
+  private timerId?: ReturnType<typeof setInterval>;
 
-  evaluate(label: HTMLElement): void {
-    const choice: string | undefined = label.textContent?.trim();
-    this.questionSet[this.questionCounter - 1].userChoice = choice;
-    if (choice && this.questionCounter <= this.questionSet.length) {
-      if (choice === this.currentQuestion.answer) {
-        this.numberOfCorrectAnswers += 1;
-      }
-      if (this.questionCounter < this.questionSet.length) {
-        this.questionCounter += 1;
-        this.currentQuestion = this.questionSet[this.questionCounter - 1];
-      } else {
-        this.endTime = this.formatTimer();
-        clearInterval(this.timerInterval);
-        this.gameEnd = true;
-      }
-    }
-  }
+  readonly questionSet = signal<Question[]>([]);
+  readonly currentIndex = signal(0);
+  readonly correctCount = signal(0);
+  readonly elapsedSeconds = signal(0);
+  readonly isLoading = signal(true);
+  readonly loadFailed = signal(false);
+  readonly gameEnd = signal(false);
+  readonly endTime = signal('');
+
+  readonly currentQuestion = computed<Question | undefined>(
+    () => this.questionSet()[this.currentIndex()],
+  );
+  readonly formattedTimer = computed(() => formatDuration(this.elapsedSeconds()));
+  readonly questionNumber = computed(() => this.currentIndex() + 1);
 
   ngOnInit(): void {
-    gameScreenUtils
-      .getTriviaQuestions()
-      .then((questions) => {
-        this.questionSet = questions;
-        this.currentQuestion = this.questionSet[this.questionCounter - 1];
-        this.startTimer();
-      })
-      .catch((e) => console.error(e));
-  }
-
-  startTimer(): void {
-    this.timerValue = 0;
-    this.timerInterval = setInterval(() => {
-      this.timerValue++;
-    }, 1000);
-  }
-
-  formatTimer(): string {
-    const hours = Math.floor(this.timerValue / 3600);
-    const minutes = Math.floor((this.timerValue % 3600) / 60);
-    const seconds = this.timerValue % 60;
-
-    return `${this.padZero(hours)}:${this.padZero(minutes)}:${this.padZero(seconds)}`;
-  }
-
-  padZero(value: number): string {
-    return value < 10 ? `0${value}` : `${value}`;
+    void this.loadQuestions();
   }
 
   ngOnDestroy(): void {
-    clearInterval(this.timerInterval);
+    this.clearTimer();
+  }
+
+  async loadQuestions(): Promise<void> {
+    this.isLoading.set(true);
+    this.loadFailed.set(false);
+    try {
+      const questions = await this.gameScreenUtils.getTriviaQuestions(this.categoryId());
+      this.questionSet.set(questions);
+      this.startTimer();
+    } catch {
+      this.loadFailed.set(true);
+    } finally {
+      this.isLoading.set(false);
+    }
+  }
+
+  retry(): void {
+    this.resetState();
+    void this.loadQuestions();
+  }
+
+  evaluate(choice: string): void {
+    const questions = this.questionSet();
+    const index = this.currentIndex();
+    const current = questions[index];
+    if (!current || this.gameEnd()) {
+      return;
+    }
+
+    const normalizedChoice = choice.trim();
+    if (!normalizedChoice) {
+      return;
+    }
+
+    const updated: Question = { ...current, userChoice: normalizedChoice };
+    const nextSet = [...questions];
+    nextSet[index] = updated;
+    this.questionSet.set(nextSet);
+
+    if (normalizedChoice === current.answer) {
+      this.correctCount.update((count) => count + 1);
+    }
+
+    if (index < questions.length - 1) {
+      this.currentIndex.update((i) => i + 1);
+    } else {
+      this.endTime.set(formatDuration(this.elapsedSeconds()));
+      this.clearTimer();
+      this.gameEnd.set(true);
+    }
+  }
+
+  private startTimer(): void {
+    this.clearTimer();
+    this.elapsedSeconds.set(0);
+    // Run outside Angular so the periodic tick neither triggers a full
+    // change-detection cycle on its own nor blocks NgZone stability
+    // (unit tests, e2e testability). The view is refreshed explicitly.
+    this.ngZone.runOutsideAngular(() => {
+      this.timerId = setInterval(() => {
+        this.elapsedSeconds.update((seconds) => seconds + 1);
+        this.cdr.detectChanges();
+      }, 1000);
+    });
+  }
+
+  private clearTimer(): void {
+    if (this.timerId !== undefined) {
+      clearInterval(this.timerId);
+      this.timerId = undefined;
+    }
+  }
+
+  private resetState(): void {
+    this.clearTimer();
+    this.questionSet.set([]);
+    this.currentIndex.set(0);
+    this.correctCount.set(0);
+    this.elapsedSeconds.set(0);
+    this.gameEnd.set(false);
+    this.endTime.set('');
   }
 }

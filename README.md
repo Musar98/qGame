@@ -1,27 +1,79 @@
-# Qgame
+# qGame — The Fiddy Question Game
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.1.2.
+A responsive, accessible trivia quiz built with [Angular 20](https://angular.dev).
+Answer 50 multiple-choice questions from the [Open Trivia Database](https://opentdb.com),
+beat the clock, then review every answer.
+
+## Prerequisites
+
+- Node.js 20+ and npm
 
 ## Development server
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+```bash
+npm start
+```
 
-## Code scaffolding
-
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+Navigate to `http://localhost:4200/`. The app reloads automatically on source changes.
 
 ## Build
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+```bash
+npm run build
+```
 
-## Running unit tests
+Production artifacts are emitted to `dist/`.
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+## Testing
 
-## Running end-to-end tests
+Unit tests live in `tests/` (mirroring `src/`), with shared factories in
+`tests/helpers/`. They run via [Karma](https://karma-runner.github.io) + Jasmine:
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+```bash
+npm test                        # watch mode
+npm run test:headless           # single run, headless Chrome
+npm run test:coverage           # single run with coverage report
+npm run typecheck               # type-check app + tests without emitting
+```
 
-## Further help
+Chrome/Chromium is required. If it is not on your `PATH`, point Karma at it:
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+```bash
+CHROME_BIN=/path/to/chrome npm run test:headless
+```
+
+## Formatting
+
+```bash
+npm run format                  # rewrite with Prettier
+npm run format:check            # verify formatting
+```
+
+## Project layout
+
+```text
+src/app/
+  app.component.*            Start screen (username + category picker)
+  categories.constants.ts    Alphabetically sorted fallback categories
+  app.config.ts              App providers (HttpClient)
+  gamescreen/
+    game-screen.component.*  Quiz flow, timer, results review
+    game-screen.utils.ts     Question loading / shuffling / HTML decoding
+    demo-questions.constants.ts  Offline fallback question set
+    types.ts                 Question model
+    spinner/                 Loading indicator
+  pageheader/ pagefooter/    Shell chrome
+  services/
+    open-trivia-api.service.ts  Open Trivia Database client (HttpClient)
+    types.ts                   API response models
+tests/
+  unit/**                    Unit specs mirroring src/
+  helpers/                   Shared test factories
+```
+
+## Notes
+
+- The trivia API sometimes returns HTML entities (`&quot;`, `&#039;`, …); they are
+  decoded before display.
+- If the API is unreachable, the game falls back to the bundled demo questions
+  so it stays playable offline.
