@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClient, withXhr } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { OpenTriviaApiService } from '../../../src/app/services/open-trivia-api.service';
 import { makeTriviaQuestion } from '../../helpers/trivia-factories';
@@ -10,7 +10,7 @@ describe('OpenTriviaApiService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [provideHttpClient(), provideHttpClientTesting()],
+      providers: [provideHttpClient(withXhr()), provideHttpClientTesting()],
     });
     service = TestBed.inject(OpenTriviaApiService);
     httpMock = TestBed.inject(HttpTestingController);
@@ -43,6 +43,28 @@ describe('OpenTriviaApiService', () => {
 
     const request = httpMock.expectOne((req) => req.url === 'https://opentdb.com/api.php');
     expect(request.request.params.get('category')).toBe('9');
+    request.flush(payload);
+
+    await expectAsync(promise).toBeResolvedTo(payload);
+  });
+
+  it('should send the requested amount', async () => {
+    const payload = { response_code: 0, results: [makeTriviaQuestion()] };
+    const promise = service.getQuestions(10);
+
+    const request = httpMock.expectOne((req) => req.url === 'https://opentdb.com/api.php');
+    expect(request.request.params.get('amount')).toBe('10');
+    request.flush(payload);
+
+    await expectAsync(promise).toBeResolvedTo(payload);
+  });
+
+  it('should clamp the amount to the API limit of 50', async () => {
+    const payload = { response_code: 0, results: [makeTriviaQuestion()] };
+    const promise = service.getQuestions(500);
+
+    const request = httpMock.expectOne((req) => req.url === 'https://opentdb.com/api.php');
+    expect(request.request.params.get('amount')).toBe('50');
     request.flush(payload);
 
     await expectAsync(promise).toBeResolvedTo(payload);

@@ -63,6 +63,26 @@ describe('GameScreenComponent', () => {
     expect(component.isLoading()).toBe(false);
   });
 
+  it('should request 50 questions by default', async () => {
+    utilsSpy.getTriviaQuestions.and.resolveTo([makeQuestion()]);
+    await createComponent();
+
+    expect(utilsSpy.getTriviaQuestions).toHaveBeenCalledWith(undefined, 50);
+  });
+
+  it('should forward the questionCount input to the loader', async () => {
+    utilsSpy.getTriviaQuestions.and.resolveTo([makeQuestion()]);
+    fixture = TestBed.createComponent(GameScreenComponent);
+    fixture.componentRef.setInput('username', 'Ada');
+    fixture.componentRef.setInput('questionCount', 10);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    expect(utilsSpy.getTriviaQuestions).toHaveBeenCalledWith(undefined, 10);
+  });
+
   it('should score a correct answer and advance to the next question', async () => {
     utilsSpy.getTriviaQuestions.and.resolveTo([
       makeQuestion(),

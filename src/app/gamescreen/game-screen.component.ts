@@ -8,6 +8,7 @@ import {
   inject,
   input,
   signal,
+  ChangeDetectionStrategy,
 } from '@angular/core';
 import { GameScreenUtils } from './game-screen.utils';
 import { SpinnerComponent } from './spinner/spinner.component';
@@ -28,11 +29,13 @@ export function formatDuration(totalSeconds: number): string {
   selector: 'app-gamescreen',
   imports: [SpinnerComponent],
   templateUrl: './game-screen.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './game-screen.component.css',
 })
 export class GameScreenComponent implements OnInit, OnDestroy {
   readonly categoryId = input<number | undefined>(undefined);
   readonly username = input<string>('Guest');
+  readonly questionCount = input<number>(50);
 
   private readonly gameScreenUtils = inject(GameScreenUtils);
   private readonly ngZone = inject(NgZone);
@@ -66,7 +69,10 @@ export class GameScreenComponent implements OnInit, OnDestroy {
     this.isLoading.set(true);
     this.loadFailed.set(false);
     try {
-      const questions = await this.gameScreenUtils.getTriviaQuestions(this.categoryId());
+      const questions = await this.gameScreenUtils.getTriviaQuestions(
+        this.categoryId(),
+        this.questionCount(),
+      );
       this.questionSet.set(questions);
       this.startTimer();
     } catch {

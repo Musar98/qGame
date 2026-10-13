@@ -74,4 +74,30 @@ describe('AppComponent', () => {
     expect(categoryNames.length).toBeGreaterThan(0);
     expect([...categoryNames].sort((a, b) => a.localeCompare(b))).toEqual(categoryNames);
   });
+
+  describe('questionCount', () => {
+    it('should default to 50 questions', () => {
+      expect(component.questionCount).toBe(50);
+    });
+
+    it('should offer the amount options with 50 preselected', () => {
+      const select: HTMLSelectElement = fixture.nativeElement.querySelector('#amount');
+      const labels = Array.from(select.options).map((option) => option.textContent?.trim() ?? '');
+      expect(labels).toEqual([
+        '10 questions',
+        '20 questions',
+        '30 questions',
+        '40 questions',
+        '50 questions',
+      ]);
+      expect(select.selectedOptions[0].textContent?.trim()).toBe('50 questions');
+    });
+
+    it('should reflect the chosen amount in the intro text', () => {
+      component.questionCount = 20;
+      fixture.detectChanges();
+      const intro: HTMLElement = fixture.nativeElement.querySelector('.intro p');
+      expect(intro.textContent).toContain('20 random questions');
+    });
+  });
 });

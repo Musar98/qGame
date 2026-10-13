@@ -3,7 +3,7 @@
   <main class="start-screen">
     <div class="intro">
       <h2>The Fiddy Question Game</h2>
-      <p>Challenge yourself with 50 random questions.</p>
+      <p>Challenge yourself with {{ questionCount }} random questions.</p>
     </div>
     <form class="start-form" (ngSubmit)="startGame()">
       <h3>
@@ -12,6 +12,12 @@
           <option [ngValue]="undefined">Any Category</option>
           @for (topicItem of categories; track topicItem.id) {
             <option [ngValue]="topicItem.id">{{ topicItem.name }}</option>
+          }
+        </select>
+        <label for="amount">Choose the number of questions</label>
+        <select id="amount" name="amount" [(ngModel)]="questionCount">
+          @for (option of questionCountOptions; track option) {
+            <option [ngValue]="option">{{ option }} questions</option>
           }
         </select>
         <label for="username">and enter a username:</label>
@@ -33,6 +39,10 @@
   </main>
 }
 @if (gameStarted) {
-  <app-gamescreen [categoryId]="categoryId" [username]="username"></app-gamescreen>
+  <app-gamescreen
+    [categoryId]="categoryId"
+    [username]="username"
+    [questionCount]="questionCount"
+  ></app-gamescreen>
 }
 <app-pagefooter></app-pagefooter>

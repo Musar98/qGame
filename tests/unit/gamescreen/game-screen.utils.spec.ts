@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClient, withXhr } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import {
   GameScreenUtils,
@@ -53,7 +53,7 @@ describe('GameScreenUtils', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [provideHttpClient(), provideHttpClientTesting()],
+      providers: [provideHttpClient(withXhr()), provideHttpClientTesting()],
     });
     httpMock = TestBed.inject(HttpTestingController);
   });
@@ -98,5 +98,27 @@ describe('GameScreenUtils', () => {
     request.flush({ response_code: 0, results: [makeTriviaQuestion()] });
 
     await promise;
+  });
+
+  it('should forward the requested amount to the API', async () => {
+    const utils = TestBed.inject(GameScreenUtils);
+    const promise = utils.getTriviaQuestions(undefined, 10);
+
+    const request = httpMock.expectOne((req) => req.url === 'https://opentdb.com/api.php');
+    expect(request.request.params.get('amount')).toBe('10');
+    request.flush({ response_code: 0, results: [makeTriviaQuestion()] });
+
+    await promise;
+  });
+
+  it('should limit the demo fallback to the requested amount', async () => {
+    const utils = TestBed.inject(GameScreenUtils);
+    const promise = utils.getTriviaQuestions(undefined, 10);
+
+    const request = httpMock.expectOne((req) => req.url === 'https://opentdb.com/api.php');
+    request.error(new ProgressEvent('Network error'));
+
+    const questions = await promise;
+    expect(questions.length).toBe(10);
   });
 });

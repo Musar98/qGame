@@ -38,11 +38,11 @@ export function remapTriviaQuestions(triviaQuestions: TriviaQuestion[]): Questio
 export class GameScreenUtils {
   private readonly triviaApi = inject(OpenTriviaApiService);
 
-  async getTriviaQuestions(categoryId?: number): Promise<Question[]> {
-    const response = await this.triviaApi.getQuestions(50, categoryId);
+  async getTriviaQuestions(categoryId?: number, amount = 50): Promise<Question[]> {
+    const response = await this.triviaApi.getQuestions(amount, categoryId);
     if (!response?.results?.length) {
       console.error('Falling back to demo questions. API response:', response);
-      return DEMO_QUESTIONS.map((question) => ({
+      return DEMO_QUESTIONS.slice(0, Math.max(1, amount)).map((question) => ({
         ...question,
         choices: [...question.choices],
       }));
