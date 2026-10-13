@@ -1,3 +1,4 @@
+import { describe, it, expect, beforeEach } from 'vitest';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { SpinnerComponent } from '../../../src/app/gamescreen/spinner/spinner.component';
 

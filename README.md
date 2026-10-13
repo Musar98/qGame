@@ -1,8 +1,8 @@
 # qGame — The Fiddy Question Game
 
-A responsive, accessible trivia quiz built with [Angular 20](https://angular.dev).
-Answer 50 multiple-choice questions from the [Open Trivia Database](https://opentdb.com),
-beat the clock, then review every answer.
+A responsive, accessible trivia quiz built with [Angular 22](https://angular.dev).
+Pick a category and question count, answer the multiple-choice questions from the
+[Open Trivia Database](https://opentdb.com), beat the clock, then review every answer.
 
 ## Prerequisites
 
@@ -27,19 +27,14 @@ Production artifacts are emitted to `dist/`.
 ## Testing
 
 Unit tests live in `tests/` (mirroring `src/`), with shared factories in
-`tests/helpers/`. They run via [Karma](https://karma-runner.github.io) + Jasmine:
+`tests/helpers/`. They run via [Vitest](https://vitest.dev) in Node with jsdom —
+no browser required:
 
 ```bash
 npm test                        # watch mode
-npm run test:headless           # single run, headless Chrome
+npm run test:headless           # single run (CI-friendly, no watch)
 npm run test:coverage           # single run with coverage report
 npm run typecheck               # type-check app + tests without emitting
-```
-
-Chrome/Chromium is required. If it is not on your `PATH`, point Karma at it:
-
-```bash
-CHROME_BIN=/path/to/chrome npm run test:headless
 ```
 
 ## Formatting

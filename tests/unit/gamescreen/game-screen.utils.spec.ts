@@ -1,5 +1,6 @@
+import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import { TestBed } from '@angular/core/testing';
-import { provideHttpClient, withXhr } from '@angular/common/http';
+import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import {
   GameScreenUtils,
@@ -42,7 +43,7 @@ describe('remapTriviaQuestions', () => {
 
     expect(remapped.question).toBe('Tom & Jerry?');
     expect(remapped.answer).toBe('Yes & no');
-    expect(remapped.choices).toHaveSize(4);
+    expect(remapped.choices).toHaveLength(4);
     expect(remapped.choices).toContain(remapped.answer);
     expect(new Set(remapped.choices).size).toBe(4);
   });
@@ -53,7 +54,7 @@ describe('GameScreenUtils', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [provideHttpClient(withXhr()), provideHttpClientTesting()],
+      providers: [provideHttpClient(), provideHttpClientTesting()],
     });
     httpMock = TestBed.inject(HttpTestingController);
   });
@@ -70,7 +71,7 @@ describe('GameScreenUtils', () => {
     request.flush({ response_code: 0, results: [makeTriviaQuestion()] });
 
     const questions = await promise;
-    expect(questions).toHaveSize(1);
+    expect(questions).toHaveLength(1);
     expect(questions[0].answer).toBe('Paris');
     expect(questions[0].choices).toContain('Paris');
   });
@@ -84,9 +85,7 @@ describe('GameScreenUtils', () => {
 
     const questions = await promise;
     expect(questions.length).toBe(DEMO_QUESTIONS.length);
-    expect(questions[0]).toEqual(
-      jasmine.objectContaining({ question: DEMO_QUESTIONS[0].question }),
-    );
+    expect(questions[0]).toEqual(expect.objectContaining({ question: DEMO_QUESTIONS[0].question }));
   });
 
   it('should forward the category id to the API', async () => {

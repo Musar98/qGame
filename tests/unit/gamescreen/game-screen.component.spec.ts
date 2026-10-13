@@ -1,11 +1,5 @@
-import {
-  ComponentFixture,
-  TestBed,
-  discardPeriodicTasks,
-  fakeAsync,
-  flushMicrotasks,
-  tick,
-} from '@angular/core/testing';
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import {
   GameScreenComponent,
   formatDuration,
@@ -31,14 +25,18 @@ describe('format helpers', () => {
 describe('GameScreenComponent', () => {
   let fixture: ComponentFixture<GameScreenComponent>;
   let component: GameScreenComponent;
-  let utilsSpy: jasmine.SpyObj<GameScreenUtils>;
+  let getTriviaQuestions: ReturnType<typeof vi.fn>;
 
   beforeEach(async () => {
-    utilsSpy = jasmine.createSpyObj<GameScreenUtils>('GameScreenUtils', ['getTriviaQuestions']);
+    getTriviaQuestions = vi.fn();
     await TestBed.configureTestingModule({
       imports: [GameScreenComponent],
-      providers: [{ provide: GameScreenUtils, useValue: utilsSpy }],
+      providers: [{ provide: GameScreenUtils, useValue: { getTriviaQuestions } }],
     }).compileComponents();
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
   });
 
   async function createComponent() {
@@ -51,10 +49,7 @@ describe('GameScreenComponent', () => {
   }
 
   it('should create and load questions', async () => {
-    utilsSpy.getTriviaQuestions.and.resolveTo([
-      makeQuestion(),
-      makeQuestion({ question: 'Second?' }),
-    ]);
+    getTriviaQuestions.mockResolvedValue([makeQuestion(), makeQuestion({ question: 'Second?' })]);
     await createComponent();
 
     expect(component).toBeTruthy();
@@ -64,14 +59,14 @@ describe('GameScreenComponent', () => {
   });
 
   it('should request 50 questions by default', async () => {
-    utilsSpy.getTriviaQuestions.and.resolveTo([makeQuestion()]);
+    getTriviaQuestions.mockResolvedValue([makeQuestion()]);
     await createComponent();
 
-    expect(utilsSpy.getTriviaQuestions).toHaveBeenCalledWith(undefined, 50);
+    expect(getTriviaQuestions).toHaveBeenCalledWith(undefined, 50);
   });
 
   it('should forward the questionCount input to the loader', async () => {
-    utilsSpy.getTriviaQuestions.and.resolveTo([makeQuestion()]);
+    getTriviaQuestions.mockResolvedValue([makeQuestion()]);
     fixture = TestBed.createComponent(GameScreenComponent);
     fixture.componentRef.setInput('username', 'Ada');
     fixture.componentRef.setInput('questionCount', 10);
@@ -80,14 +75,11 @@ describe('GameScreenComponent', () => {
     await fixture.whenStable();
     fixture.detectChanges();
 
-    expect(utilsSpy.getTriviaQuestions).toHaveBeenCalledWith(undefined, 10);
+    expect(getTriviaQuestions).toHaveBeenCalledWith(undefined, 10);
   });
 
   it('should score a correct answer and advance to the next question', async () => {
-    utilsSpy.getTriviaQuestions.and.resolveTo([
-      makeQuestion(),
-      makeQuestion({ question: 'Second?' }),
-    ]);
+    getTriviaQuestions.mockResolvedValue([makeQuestion(), makeQuestion({ question: 'Second?' })]);
     await createComponent();
 
     component.evaluate('Paris');
@@ -98,7 +90,7 @@ describe('GameScreenComponent', () => {
   });
 
   it('should show the username in the final score', async () => {
-    utilsSpy.getTriviaQuestions.and.resolveTo([makeQuestion()]);
+    getTriviaQuestions.mockResolvedValue([makeQuestion()]);
     await createComponent();
 
     component.evaluate('Paris');
@@ -111,10 +103,7 @@ describe('GameScreenComponent', () => {
   });
 
   it('should not score a wrong answer but still advance', async () => {
-    utilsSpy.getTriviaQuestions.and.resolveTo([
-      makeQuestion(),
-      makeQuestion({ question: 'Second?' }),
-    ]);
+    getTriviaQuestions.mockResolvedValue([makeQuestion(), makeQuestion({ question: 'Second?' })]);
     await createComponent();
 
     component.evaluate('London');
@@ -125,10 +114,7 @@ describe('GameScreenComponent', () => {
   });
 
   it('should ignore blank choices', async () => {
-    utilsSpy.getTriviaQuestions.and.resolveTo([
-      makeQuestion(),
-      makeQuestion({ question: 'Second?' }),
-    ]);
+    getTriviaQuestions.mockResolvedValue([makeQuestion(), makeQuestion({ question: 'Second?' })]);
     await createComponent();
 
     component.evaluate('   ');
@@ -137,7 +123,7 @@ describe('GameScreenComponent', () => {
   });
 
   it('should end the game after the last question', async () => {
-    utilsSpy.getTriviaQuestions.and.resolveTo([makeQuestion()]);
+    getTriviaQuestions.mockResolvedValue([makeQuestion()]);
     await createComponent();
 
     component.evaluate('Paris');
@@ -146,28 +132,28 @@ describe('GameScreenComponent', () => {
     expect(component.endTime()).toMatch(/^\d{2}:\d{2}:\d{2}$/);
   });
 
-  it('should tick the timer every second', fakeAsync(() => {
-    utilsSpy.getTriviaQuestions.and.resolveTo([makeQuestion()]);
+  it('should tick the timer every second', async () => {
+    vi.useFakeTimers();
+    getTriviaQuestions.mockResolvedValue([makeQuestion()]);
     fixture = TestBed.createComponent(GameScreenComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-    flushMicrotasks();
+    await fixture.whenStable();
     fixture.detectChanges();
 
     expect(component.elapsedSeconds()).toBe(0);
-    tick(3000);
+    await vi.advanceTimersByTimeAsync(3000);
     expect(component.elapsedSeconds()).toBe(3);
-    discardPeriodicTasks();
-  }));
+  });
 
   it('should show an error state with retry when loading fails', async () => {
-    utilsSpy.getTriviaQuestions.and.rejectWith(new Error('offline'));
+    getTriviaQuestions.mockRejectedValue(new Error('offline'));
     await createComponent();
 
     expect(component.loadFailed()).toBe(true);
     expect(fixture.nativeElement.querySelector('.error-state')).toBeTruthy();
 
-    utilsSpy.getTriviaQuestions.and.resolveTo([makeQuestion()]);
+    getTriviaQuestions.mockResolvedValue([makeQuestion()]);
     component.retry();
     await fixture.whenStable();
     fixture.detectChanges();
